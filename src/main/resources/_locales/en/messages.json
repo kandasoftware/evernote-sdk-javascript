@@ -1,0 +1,17 @@
+{
+    "version":{
+        "message":"${version}"
+    },
+    "name":{
+        "message":"Sample to test sync with Evernote"
+    },
+    "description":{
+        "message":""
+    },
+    "title":{
+        "message":"test JS API for evernote"
+    },
+    "loginTitle":{
+        "message":""
+    }
+}
