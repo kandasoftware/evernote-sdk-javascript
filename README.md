@@ -15,5 +15,11 @@ Evernote API version 1.22
 
 <p>The sample application demonstrates how to use the Evernote SDK for javascript apps to authentication to the Evernote service using OAuth, then access the user's Evernote account. To run the sample project:</p>
 <ul>
-<li></li>
+<li>edit src\main\resources\javascript\auth.js with your correct params</li>
+<li>go to Google Chrome - settings - extentions</li>
+<li>load unpack extention src\main\resources\</li>
+<li>you will see JS icon on the toolbar in the browser</li>
+<li>app will be trying to authenticate to the Evernote using your paramms from auth.js</li>
+<li>if authentication will be successfull you can click to JS icon and open test page</li>
+<li>sample get user, list of user's notebooks and add test note to default notebook</li>
 </ul>
