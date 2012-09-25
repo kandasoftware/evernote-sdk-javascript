@@ -21,5 +21,5 @@ Evernote API version 1.22
 <li>you will see JS icon on the toolbar in the browser</li>
 <li>app will be trying to authenticate to the Evernote using your paramms from auth.js</li>
 <li>if authentication will be successfull you can click to JS icon and open test page</li>
-<li>sample get user, list of user's notebooks and add test note to default notebook</li>
+<li>sample gets user, list of user's notebooks and add test note to default notebook</li>
 </ul>
