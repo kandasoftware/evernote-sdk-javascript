@@ -183,7 +183,7 @@ Thrift.Transport.prototype = {
 
     },
 
-    flush:function(callback) {
+    flush:function(k) {
         if (this.url == undefined || this.url == '')
             return this.send_buf;
 
@@ -191,34 +191,14 @@ Thrift.Transport.prototype = {
 
         if (request.overrideMimeType)
             request.overrideMimeType("text/plain; charset=x-user-defined");
-
-        request.open("POST", this.url, true);
+        //used async=false
+        request.open("POST", this.url, false);
         request.setRequestHeader("Content-Type", "application/x-thrift");
 
         request.sendAsBinary(this.getSendBuffer());
-        return request;
+        this.setRecvBuffer(this.uint8Array(request.response));
+        this.send_buf = '';
     },
-
-    jqRequest: function(object, postData, arguments, callback) {
-        var transport = this;
-        var function_arguments = arguments;
-        postData.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                if(this.status == 200) {
-                    transport.setRecvBuffer(transport.uint8Array(this.response));
-                    if (callback !== undefined) {
-                        var response = callback.call(object);
-                        if(response){
-                            //last argument is callback function from your code which can process result
-                            function_arguments[function_arguments.length-1](response);
-                            return;
-                        }
-                    }
-                }
-            }
-        };
-    },
-
     setRecvBuffer:function(buf) {
         this.recv_buf = buf;
         this.recv_buf_sz = this.recv_buf.length;
@@ -699,11 +679,63 @@ Thrift.Protocol.prototype = {
     },
 
 //Method to arbitrarily skip over data.
-    skip:function(type) {
-        throw "skip not supported yet"
+     skip:function(type) {
+        switch(type){
+            case Thrift.Type.BOOL:
+                this.readBool();
+                break;
+            case Thrift.Type.DOUBLE:
+                this.readDouble();
+                break;
+            case Thrift.Type.I16:
+                this.readI16();
+                break;
+            case Thrift.Type.I32:
+                this.readI32();
+                break;
+            case Thrift.Type.UTF7:
+                break;
+            case Thrift.Type.STRUCT:
+                this.readStructBegin();
+                while (true)
+                {
+                    var ret = this.readFieldBegin();
+                    var fname = ret.fname;
+                    var ftype = ret.ftype;
+                    var fid = ret.fid;
+                    if (ftype == Thrift.Type.STOP) {
+                        break;
+                    }
+                    switch (fid)
+                    {
+                        case 1:
+                            if (ftype == Thrift.Type.I32) {
+                                this.errorCode = this.readI32().value;
+                            } else {
+                                this.skip(ftype);
+                            }
+                            break;
+                        case 2:
+                            if (ftype == Thrift.Type.STRING) {
+                                this.parameter = input.readString().value;
+                            } else {
+                                this.skip(ftype);
+                            }
+                            break;
+                        default:
+                            this.skip(ftype);
+                    }
+                    this.readFieldEnd();
+                }
+                this.readStructEnd();
+                break;
+            default:
+                break;
+        }
     }
 
 };
+
 
 Thrift.objectLength = function(obj) {
     var length = 0;

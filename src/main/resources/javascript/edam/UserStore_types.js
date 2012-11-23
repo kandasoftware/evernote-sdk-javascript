@@ -134,6 +134,8 @@ PremiumInfo = function(args) {
   this.canPurchaseUploadAllowance = null;
   this.sponsoredGroupName = null;
   this.sponsoredGroupRole = null;
+  this.businessName = null;
+  this.businessAdmin = null;
   if (args) {
     if (args.currentTime !== undefined) {
       this.currentTime = args.currentTime;
@@ -164,6 +166,12 @@ PremiumInfo = function(args) {
     }
     if (args.sponsoredGroupRole !== undefined) {
       this.sponsoredGroupRole = args.sponsoredGroupRole;
+    }
+    if (args.businessName !== undefined) {
+      this.businessName = args.businessName;
+    }
+    if (args.businessAdmin !== undefined) {
+      this.businessAdmin = args.businessAdmin;
     }
   }
 };
@@ -251,6 +259,20 @@ PremiumInfo.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 11:
+      if (ftype == Thrift.Type.STRING) {
+        this.businessName = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 12:
+      if (ftype == Thrift.Type.BOOL) {
+        this.businessAdmin = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -310,6 +332,16 @@ PremiumInfo.prototype.write = function(output) {
   if (this.sponsoredGroupRole) {
     output.writeFieldBegin('sponsoredGroupRole', Thrift.Type.I32, 10);
     output.writeI32(this.sponsoredGroupRole);
+    output.writeFieldEnd();
+  }
+  if (this.businessName) {
+    output.writeFieldBegin('businessName', Thrift.Type.STRING, 11);
+    output.writeString(this.businessName);
+    output.writeFieldEnd();
+  }
+  if (this.businessAdmin) {
+    output.writeFieldBegin('businessAdmin', Thrift.Type.BOOL, 12);
+    output.writeBool(this.businessAdmin);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -465,16 +497,238 @@ AuthenticationResult.prototype.write = function(output) {
   return;
 };
 
+BootstrapSettings = function(args) {
+  this.serviceHost = null;
+  this.marketingUrl = null;
+  this.supportUrl = null;
+  this.accountEmailDomain = null;
+  this.enableFacebookSharing = null;
+  this.enableGiftSubscriptions = null;
+  this.enableSupportTickets = null;
+  this.enableSharedNotebooks = null;
+  this.enableSingleNoteSharing = null;
+  this.enableSponsoredAccounts = null;
+  this.enableTwitterSharing = null;
+  this.enableLinkedInSharing = null;
+  if (args) {
+    if (args.serviceHost !== undefined) {
+      this.serviceHost = args.serviceHost;
+    }
+    if (args.marketingUrl !== undefined) {
+      this.marketingUrl = args.marketingUrl;
+    }
+    if (args.supportUrl !== undefined) {
+      this.supportUrl = args.supportUrl;
+    }
+    if (args.accountEmailDomain !== undefined) {
+      this.accountEmailDomain = args.accountEmailDomain;
+    }
+    if (args.enableFacebookSharing !== undefined) {
+      this.enableFacebookSharing = args.enableFacebookSharing;
+    }
+    if (args.enableGiftSubscriptions !== undefined) {
+      this.enableGiftSubscriptions = args.enableGiftSubscriptions;
+    }
+    if (args.enableSupportTickets !== undefined) {
+      this.enableSupportTickets = args.enableSupportTickets;
+    }
+    if (args.enableSharedNotebooks !== undefined) {
+      this.enableSharedNotebooks = args.enableSharedNotebooks;
+    }
+    if (args.enableSingleNoteSharing !== undefined) {
+      this.enableSingleNoteSharing = args.enableSingleNoteSharing;
+    }
+    if (args.enableSponsoredAccounts !== undefined) {
+      this.enableSponsoredAccounts = args.enableSponsoredAccounts;
+    }
+    if (args.enableTwitterSharing !== undefined) {
+      this.enableTwitterSharing = args.enableTwitterSharing;
+    }
+    if (args.enableLinkedInSharing !== undefined) {
+      this.enableLinkedInSharing = args.enableLinkedInSharing;
+    }
+  }
+};
+BootstrapSettings.prototype = {};
+BootstrapSettings.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.serviceHost = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.marketingUrl = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.supportUrl = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.accountEmailDomain = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.BOOL) {
+        this.enableFacebookSharing = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.enableGiftSubscriptions = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.BOOL) {
+        this.enableSupportTickets = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.BOOL) {
+        this.enableSharedNotebooks = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.BOOL) {
+        this.enableSingleNoteSharing = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.BOOL) {
+        this.enableSponsoredAccounts = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.BOOL) {
+        this.enableTwitterSharing = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 12:
+      if (ftype == Thrift.Type.BOOL) {
+        this.enableLinkedInSharing = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+BootstrapSettings.prototype.write = function(output) {
+  output.writeStructBegin('BootstrapSettings');
+  if (this.serviceHost) {
+    output.writeFieldBegin('serviceHost', Thrift.Type.STRING, 1);
+    output.writeString(this.serviceHost);
+    output.writeFieldEnd();
+  }
+  if (this.marketingUrl) {
+    output.writeFieldBegin('marketingUrl', Thrift.Type.STRING, 2);
+    output.writeString(this.marketingUrl);
+    output.writeFieldEnd();
+  }
+  if (this.supportUrl) {
+    output.writeFieldBegin('supportUrl', Thrift.Type.STRING, 3);
+    output.writeString(this.supportUrl);
+    output.writeFieldEnd();
+  }
+  if (this.accountEmailDomain) {
+    output.writeFieldBegin('accountEmailDomain', Thrift.Type.STRING, 4);
+    output.writeString(this.accountEmailDomain);
+    output.writeFieldEnd();
+  }
+  if (this.enableFacebookSharing) {
+    output.writeFieldBegin('enableFacebookSharing', Thrift.Type.BOOL, 5);
+    output.writeBool(this.enableFacebookSharing);
+    output.writeFieldEnd();
+  }
+  if (this.enableGiftSubscriptions) {
+    output.writeFieldBegin('enableGiftSubscriptions', Thrift.Type.BOOL, 6);
+    output.writeBool(this.enableGiftSubscriptions);
+    output.writeFieldEnd();
+  }
+  if (this.enableSupportTickets) {
+    output.writeFieldBegin('enableSupportTickets', Thrift.Type.BOOL, 7);
+    output.writeBool(this.enableSupportTickets);
+    output.writeFieldEnd();
+  }
+  if (this.enableSharedNotebooks) {
+    output.writeFieldBegin('enableSharedNotebooks', Thrift.Type.BOOL, 8);
+    output.writeBool(this.enableSharedNotebooks);
+    output.writeFieldEnd();
+  }
+  if (this.enableSingleNoteSharing) {
+    output.writeFieldBegin('enableSingleNoteSharing', Thrift.Type.BOOL, 9);
+    output.writeBool(this.enableSingleNoteSharing);
+    output.writeFieldEnd();
+  }
+  if (this.enableSponsoredAccounts) {
+    output.writeFieldBegin('enableSponsoredAccounts', Thrift.Type.BOOL, 10);
+    output.writeBool(this.enableSponsoredAccounts);
+    output.writeFieldEnd();
+  }
+  if (this.enableTwitterSharing) {
+    output.writeFieldBegin('enableTwitterSharing', Thrift.Type.BOOL, 11);
+    output.writeBool(this.enableTwitterSharing);
+    output.writeFieldEnd();
+  }
+  if (this.enableLinkedInSharing) {
+    output.writeFieldBegin('enableLinkedInSharing', Thrift.Type.BOOL, 12);
+    output.writeBool(this.enableLinkedInSharing);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 BootstrapProfile = function(args) {
   this.name = null;
-  this.preferred = null;
   this.settings = null;
   if (args) {
     if (args.name !== undefined) {
       this.name = args.name;
-    }
-    if (args.preferred !== undefined) {
-      this.preferred = args.preferred;
     }
     if (args.settings !== undefined) {
       this.settings = args.settings;
@@ -503,37 +757,9 @@ BootstrapProfile.prototype.read = function(input) {
       }
       break;
       case 2:
-      if (ftype == Thrift.Type.BOOL) {
-        this.preferred = input.readBool().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.MAP) {
-        var _size0 = 0;
-        var _rtmp34;
-        this.settings = {};
-        var _ktype1 = 0;
-        var _vtype2 = 0;
-        _rtmp34 = input.readMapBegin();
-        _ktype1 = _rtmp34.ktype;
-        _vtype2 = _rtmp34.vtype;
-        _size0 = _rtmp34.size;
-        for (var _i5 = 0; _i5 < _size0; ++_i5)
-        {
-          if (_i5 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
-          var key6 = null;
-          var val7 = null;
-          key6 = input.readString().value;
-          val7 = input.readString().value;
-          this.settings[key6] = val7;
-        }
-        input.readMapEnd();
+      if (ftype == Thrift.Type.STRUCT) {
+        this.settings = new BootstrapSettings();
+        this.settings.read(input);
       } else {
         input.skip(ftype);
       }
@@ -554,24 +780,9 @@ BootstrapProfile.prototype.write = function(output) {
     output.writeString(this.name);
     output.writeFieldEnd();
   }
-  if (this.preferred) {
-    output.writeFieldBegin('preferred', Thrift.Type.BOOL, 2);
-    output.writeBool(this.preferred);
-    output.writeFieldEnd();
-  }
   if (this.settings) {
-    output.writeFieldBegin('settings', Thrift.Type.MAP, 3);
-    output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.settings));
-    for (var kiter8 in this.settings)
-    {
-      if (this.settings.hasOwnProperty(kiter8))
-      {
-        var viter9 = this.settings[kiter8];
-        output.writeString(kiter8);
-        output.writeString(viter9);
-      }
-    }
-    output.writeMapEnd();
+    output.writeFieldBegin('settings', Thrift.Type.STRUCT, 2);
+    this.settings.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -603,19 +814,19 @@ BootstrapInfo.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.LIST) {
-        var _size10 = 0;
-        var _rtmp314;
+        var _size0 = 0;
+        var _rtmp34;
         this.profiles = [];
-        var _etype13 = 0;
-        _rtmp314 = input.readListBegin();
-        _etype13 = _rtmp314.etype;
-        _size10 = _rtmp314.size;
-        for (var _i15 = 0; _i15 < _size10; ++_i15)
+        var _etype3 = 0;
+        _rtmp34 = input.readListBegin();
+        _etype3 = _rtmp34.etype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
         {
-          var elem16 = null;
-          elem16 = new BootstrapProfile();
-          elem16.read(input);
-          this.profiles.push(elem16);
+          var elem6 = null;
+          elem6 = new BootstrapProfile();
+          elem6.read(input);
+          this.profiles.push(elem6);
         }
         input.readListEnd();
       } else {
@@ -639,12 +850,12 @@ BootstrapInfo.prototype.write = function(output) {
   if (this.profiles) {
     output.writeFieldBegin('profiles', Thrift.Type.LIST, 1);
     output.writeListBegin(Thrift.Type.STRUCT, this.profiles.length);
-    for (var iter17 in this.profiles)
+    for (var iter7 in this.profiles)
     {
-      if (this.profiles.hasOwnProperty(iter17))
+      if (this.profiles.hasOwnProperty(iter7))
       {
-        iter17 = this.profiles[iter17];
-        iter17.write(output);
+        iter7 = this.profiles[iter7];
+        iter7.write(output);
       }
     }
     output.writeListEnd();
@@ -656,4 +867,4 @@ BootstrapInfo.prototype.write = function(output) {
 };
 
 EDAM_VERSION_MAJOR = 1;
-EDAM_VERSION_MINOR = 21;
+EDAM_VERSION_MINOR = 22;

@@ -4,15 +4,6 @@
 // DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 //
 
-RelatedNotesFields = {
-'RNF_CREATED' : 1,
-'RNF_PLACENAME' : 3
-};
-RelatedNotesRequirement = {
-'RNR_MUST' : 1,
-'RNR_MUST_NOT' : 2,
-'RNR_SHOULD' : 3
-};
 SyncState = function(args) {
   this.currentTime = null;
   this.fullSyncBefore = null;
@@ -1224,975 +1215,6 @@ NoteList.prototype.write = function(output) {
   return;
 };
 
-RelatedNotesExample = function(args) {
-  this.guid = null;
-  this.maxQueryTerms = null;
-  this.minTermFrequency = null;
-  this.scoreBoost = null;
-  this.requirement = null;
-  if (args) {
-    if (args.guid !== undefined) {
-      this.guid = args.guid;
-    }
-    if (args.maxQueryTerms !== undefined) {
-      this.maxQueryTerms = args.maxQueryTerms;
-    }
-    if (args.minTermFrequency !== undefined) {
-      this.minTermFrequency = args.minTermFrequency;
-    }
-    if (args.scoreBoost !== undefined) {
-      this.scoreBoost = args.scoreBoost;
-    }
-    if (args.requirement !== undefined) {
-      this.requirement = args.requirement;
-    }
-  }
-};
-RelatedNotesExample.prototype = {};
-RelatedNotesExample.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.guid = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.I32) {
-        this.maxQueryTerms = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I32) {
-        this.minTermFrequency = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.scoreBoost = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.I32) {
-        this.requirement = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RelatedNotesExample.prototype.write = function(output) {
-  output.writeStructBegin('RelatedNotesExample');
-  if (this.guid) {
-    output.writeFieldBegin('guid', Thrift.Type.STRING, 1);
-    output.writeString(this.guid);
-    output.writeFieldEnd();
-  }
-  if (this.maxQueryTerms) {
-    output.writeFieldBegin('maxQueryTerms', Thrift.Type.I32, 2);
-    output.writeI32(this.maxQueryTerms);
-    output.writeFieldEnd();
-  }
-  if (this.minTermFrequency) {
-    output.writeFieldBegin('minTermFrequency', Thrift.Type.I32, 3);
-    output.writeI32(this.minTermFrequency);
-    output.writeFieldEnd();
-  }
-  if (this.scoreBoost) {
-    output.writeFieldBegin('scoreBoost', Thrift.Type.DOUBLE, 4);
-    output.writeDouble(this.scoreBoost);
-    output.writeFieldEnd();
-  }
-  if (this.requirement) {
-    output.writeFieldBegin('requirement', Thrift.Type.I32, 5);
-    output.writeI32(this.requirement);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RelatedNotesExampleText = function(args) {
-  this.text = null;
-  this.maxQueryTerms = null;
-  this.minTermFrequency = null;
-  this.scoreBoost = null;
-  this.requirement = null;
-  if (args) {
-    if (args.text !== undefined) {
-      this.text = args.text;
-    }
-    if (args.maxQueryTerms !== undefined) {
-      this.maxQueryTerms = args.maxQueryTerms;
-    }
-    if (args.minTermFrequency !== undefined) {
-      this.minTermFrequency = args.minTermFrequency;
-    }
-    if (args.scoreBoost !== undefined) {
-      this.scoreBoost = args.scoreBoost;
-    }
-    if (args.requirement !== undefined) {
-      this.requirement = args.requirement;
-    }
-  }
-};
-RelatedNotesExampleText.prototype = {};
-RelatedNotesExampleText.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.text = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.I32) {
-        this.maxQueryTerms = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I32) {
-        this.minTermFrequency = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.scoreBoost = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.I32) {
-        this.requirement = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RelatedNotesExampleText.prototype.write = function(output) {
-  output.writeStructBegin('RelatedNotesExampleText');
-  if (this.text) {
-    output.writeFieldBegin('text', Thrift.Type.STRING, 1);
-    output.writeString(this.text);
-    output.writeFieldEnd();
-  }
-  if (this.maxQueryTerms) {
-    output.writeFieldBegin('maxQueryTerms', Thrift.Type.I32, 2);
-    output.writeI32(this.maxQueryTerms);
-    output.writeFieldEnd();
-  }
-  if (this.minTermFrequency) {
-    output.writeFieldBegin('minTermFrequency', Thrift.Type.I32, 3);
-    output.writeI32(this.minTermFrequency);
-    output.writeFieldEnd();
-  }
-  if (this.scoreBoost) {
-    output.writeFieldBegin('scoreBoost', Thrift.Type.DOUBLE, 4);
-    output.writeDouble(this.scoreBoost);
-    output.writeFieldEnd();
-  }
-  if (this.requirement) {
-    output.writeFieldBegin('requirement', Thrift.Type.I32, 5);
-    output.writeI32(this.requirement);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RelatedNotesTerms = function(args) {
-  this.text = null;
-  this.field = null;
-  this.scoreBoost = null;
-  this.slop = null;
-  this.requirement = null;
-  if (args) {
-    if (args.text !== undefined) {
-      this.text = args.text;
-    }
-    if (args.field !== undefined) {
-      this.field = args.field;
-    }
-    if (args.scoreBoost !== undefined) {
-      this.scoreBoost = args.scoreBoost;
-    }
-    if (args.slop !== undefined) {
-      this.slop = args.slop;
-    }
-    if (args.requirement !== undefined) {
-      this.requirement = args.requirement;
-    }
-  }
-};
-RelatedNotesTerms.prototype = {};
-RelatedNotesTerms.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.text = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.I32) {
-        this.field = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.scoreBoost = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.I32) {
-        this.slop = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.I32) {
-        this.requirement = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RelatedNotesTerms.prototype.write = function(output) {
-  output.writeStructBegin('RelatedNotesTerms');
-  if (this.text) {
-    output.writeFieldBegin('text', Thrift.Type.STRING, 1);
-    output.writeString(this.text);
-    output.writeFieldEnd();
-  }
-  if (this.field) {
-    output.writeFieldBegin('field', Thrift.Type.I32, 2);
-    output.writeI32(this.field);
-    output.writeFieldEnd();
-  }
-  if (this.scoreBoost) {
-    output.writeFieldBegin('scoreBoost', Thrift.Type.DOUBLE, 3);
-    output.writeDouble(this.scoreBoost);
-    output.writeFieldEnd();
-  }
-  if (this.slop) {
-    output.writeFieldBegin('slop', Thrift.Type.I32, 4);
-    output.writeI32(this.slop);
-    output.writeFieldEnd();
-  }
-  if (this.requirement) {
-    output.writeFieldBegin('requirement', Thrift.Type.I32, 5);
-    output.writeI32(this.requirement);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RelatedNotesTimestampRange = function(args) {
-  this.field = null;
-  this.minInclusive = null;
-  this.maxInclusive = null;
-  this.scoreBoost = null;
-  this.requirement = null;
-  if (args) {
-    if (args.field !== undefined) {
-      this.field = args.field;
-    }
-    if (args.minInclusive !== undefined) {
-      this.minInclusive = args.minInclusive;
-    }
-    if (args.maxInclusive !== undefined) {
-      this.maxInclusive = args.maxInclusive;
-    }
-    if (args.scoreBoost !== undefined) {
-      this.scoreBoost = args.scoreBoost;
-    }
-    if (args.requirement !== undefined) {
-      this.requirement = args.requirement;
-    }
-  }
-};
-RelatedNotesTimestampRange.prototype = {};
-RelatedNotesTimestampRange.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.I32) {
-        this.field = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.I64) {
-        this.minInclusive = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I64) {
-        this.maxInclusive = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.scoreBoost = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.I32) {
-        this.requirement = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RelatedNotesTimestampRange.prototype.write = function(output) {
-  output.writeStructBegin('RelatedNotesTimestampRange');
-  if (this.field) {
-    output.writeFieldBegin('field', Thrift.Type.I32, 1);
-    output.writeI32(this.field);
-    output.writeFieldEnd();
-  }
-  if (this.minInclusive) {
-    output.writeFieldBegin('minInclusive', Thrift.Type.I64, 2);
-    output.writeI64(this.minInclusive);
-    output.writeFieldEnd();
-  }
-  if (this.maxInclusive) {
-    output.writeFieldBegin('maxInclusive', Thrift.Type.I64, 3);
-    output.writeI64(this.maxInclusive);
-    output.writeFieldEnd();
-  }
-  if (this.scoreBoost) {
-    output.writeFieldBegin('scoreBoost', Thrift.Type.DOUBLE, 4);
-    output.writeDouble(this.scoreBoost);
-    output.writeFieldEnd();
-  }
-  if (this.requirement) {
-    output.writeFieldBegin('requirement', Thrift.Type.I32, 5);
-    output.writeI32(this.requirement);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RelatedNotesGeographicRange = function(args) {
-  this.latitudeCenter = null;
-  this.latitudePad = null;
-  this.longitudeCenter = null;
-  this.longitudePad = null;
-  this.scoreBoost = null;
-  this.requirement = null;
-  if (args) {
-    if (args.latitudeCenter !== undefined) {
-      this.latitudeCenter = args.latitudeCenter;
-    }
-    if (args.latitudePad !== undefined) {
-      this.latitudePad = args.latitudePad;
-    }
-    if (args.longitudeCenter !== undefined) {
-      this.longitudeCenter = args.longitudeCenter;
-    }
-    if (args.longitudePad !== undefined) {
-      this.longitudePad = args.longitudePad;
-    }
-    if (args.scoreBoost !== undefined) {
-      this.scoreBoost = args.scoreBoost;
-    }
-    if (args.requirement !== undefined) {
-      this.requirement = args.requirement;
-    }
-  }
-};
-RelatedNotesGeographicRange.prototype = {};
-RelatedNotesGeographicRange.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.latitudeCenter = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.latitudePad = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.longitudeCenter = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.longitudePad = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.scoreBoost = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 6:
-      if (ftype == Thrift.Type.I32) {
-        this.requirement = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RelatedNotesGeographicRange.prototype.write = function(output) {
-  output.writeStructBegin('RelatedNotesGeographicRange');
-  if (this.latitudeCenter) {
-    output.writeFieldBegin('latitudeCenter', Thrift.Type.DOUBLE, 1);
-    output.writeDouble(this.latitudeCenter);
-    output.writeFieldEnd();
-  }
-  if (this.latitudePad) {
-    output.writeFieldBegin('latitudePad', Thrift.Type.DOUBLE, 2);
-    output.writeDouble(this.latitudePad);
-    output.writeFieldEnd();
-  }
-  if (this.longitudeCenter) {
-    output.writeFieldBegin('longitudeCenter', Thrift.Type.DOUBLE, 3);
-    output.writeDouble(this.longitudeCenter);
-    output.writeFieldEnd();
-  }
-  if (this.longitudePad) {
-    output.writeFieldBegin('longitudePad', Thrift.Type.DOUBLE, 4);
-    output.writeDouble(this.longitudePad);
-    output.writeFieldEnd();
-  }
-  if (this.scoreBoost) {
-    output.writeFieldBegin('scoreBoost', Thrift.Type.DOUBLE, 5);
-    output.writeDouble(this.scoreBoost);
-    output.writeFieldEnd();
-  }
-  if (this.requirement) {
-    output.writeFieldBegin('requirement', Thrift.Type.I32, 6);
-    output.writeI32(this.requirement);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RelatedNotesQuery = function(args) {
-  this.exampleNote = null;
-  this.exampleText = null;
-  this.geoRange = null;
-  this.terms = null;
-  this.timestampRanges = null;
-  this.timeZone = null;
-  if (args) {
-    if (args.exampleNote !== undefined) {
-      this.exampleNote = args.exampleNote;
-    }
-    if (args.exampleText !== undefined) {
-      this.exampleText = args.exampleText;
-    }
-    if (args.geoRange !== undefined) {
-      this.geoRange = args.geoRange;
-    }
-    if (args.terms !== undefined) {
-      this.terms = args.terms;
-    }
-    if (args.timestampRanges !== undefined) {
-      this.timestampRanges = args.timestampRanges;
-    }
-    if (args.timeZone !== undefined) {
-      this.timeZone = args.timeZone;
-    }
-  }
-};
-RelatedNotesQuery.prototype = {};
-RelatedNotesQuery.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.exampleNote = new RelatedNotesExample();
-        this.exampleNote.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.exampleText = new RelatedNotesExampleText();
-        this.exampleText.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.geoRange = new RelatedNotesGeographicRange();
-        this.geoRange.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.LIST) {
-        var _size120 = 0;
-        var _rtmp3124;
-        this.terms = [];
-        var _etype123 = 0;
-        _rtmp3124 = input.readListBegin();
-        _etype123 = _rtmp3124.etype;
-        _size120 = _rtmp3124.size;
-        for (var _i125 = 0; _i125 < _size120; ++_i125)
-        {
-          var elem126 = null;
-          elem126 = new RelatedNotesTerms();
-          elem126.read(input);
-          this.terms.push(elem126);
-        }
-        input.readListEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.LIST) {
-        var _size127 = 0;
-        var _rtmp3131;
-        this.timestampRanges = [];
-        var _etype130 = 0;
-        _rtmp3131 = input.readListBegin();
-        _etype130 = _rtmp3131.etype;
-        _size127 = _rtmp3131.size;
-        for (var _i132 = 0; _i132 < _size127; ++_i132)
-        {
-          var elem133 = null;
-          elem133 = new RelatedNotesTimestampRange();
-          elem133.read(input);
-          this.timestampRanges.push(elem133);
-        }
-        input.readListEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 6:
-      if (ftype == Thrift.Type.STRING) {
-        this.timeZone = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RelatedNotesQuery.prototype.write = function(output) {
-  output.writeStructBegin('RelatedNotesQuery');
-  if (this.exampleNote) {
-    output.writeFieldBegin('exampleNote', Thrift.Type.STRUCT, 1);
-    this.exampleNote.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.exampleText) {
-    output.writeFieldBegin('exampleText', Thrift.Type.STRUCT, 2);
-    this.exampleText.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.geoRange) {
-    output.writeFieldBegin('geoRange', Thrift.Type.STRUCT, 3);
-    this.geoRange.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.terms) {
-    output.writeFieldBegin('terms', Thrift.Type.LIST, 4);
-    output.writeListBegin(Thrift.Type.STRUCT, this.terms.length);
-    for (var iter134 in this.terms)
-    {
-      if (this.terms.hasOwnProperty(iter134))
-      {
-        iter134 = this.terms[iter134];
-        iter134.write(output);
-      }
-    }
-    output.writeListEnd();
-    output.writeFieldEnd();
-  }
-  if (this.timestampRanges) {
-    output.writeFieldBegin('timestampRanges', Thrift.Type.LIST, 5);
-    output.writeListBegin(Thrift.Type.STRUCT, this.timestampRanges.length);
-    for (var iter135 in this.timestampRanges)
-    {
-      if (this.timestampRanges.hasOwnProperty(iter135))
-      {
-        iter135 = this.timestampRanges[iter135];
-        iter135.write(output);
-      }
-    }
-    output.writeListEnd();
-    output.writeFieldEnd();
-  }
-  if (this.timeZone) {
-    output.writeFieldBegin('timeZone', Thrift.Type.STRING, 6);
-    output.writeString(this.timeZone);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RelatedNotesHit = function(args) {
-  this.note = null;
-  this.explanation = null;
-  this.score = null;
-  if (args) {
-    if (args.note !== undefined) {
-      this.note = args.note;
-    }
-    if (args.explanation !== undefined) {
-      this.explanation = args.explanation;
-    }
-    if (args.score !== undefined) {
-      this.score = args.score;
-    }
-  }
-};
-RelatedNotesHit.prototype = {};
-RelatedNotesHit.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.note = new Note();
-        this.note.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.explanation = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.DOUBLE) {
-        this.score = input.readDouble().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RelatedNotesHit.prototype.write = function(output) {
-  output.writeStructBegin('RelatedNotesHit');
-  if (this.note) {
-    output.writeFieldBegin('note', Thrift.Type.STRUCT, 1);
-    this.note.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.explanation) {
-    output.writeFieldBegin('explanation', Thrift.Type.STRING, 2);
-    output.writeString(this.explanation);
-    output.writeFieldEnd();
-  }
-  if (this.score) {
-    output.writeFieldBegin('score', Thrift.Type.DOUBLE, 3);
-    output.writeDouble(this.score);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RelatedNotesResult = function(args) {
-  this.hits = null;
-  this.totalNotes = null;
-  this.searchTime = null;
-  this.query = null;
-  if (args) {
-    if (args.hits !== undefined) {
-      this.hits = args.hits;
-    }
-    if (args.totalNotes !== undefined) {
-      this.totalNotes = args.totalNotes;
-    }
-    if (args.searchTime !== undefined) {
-      this.searchTime = args.searchTime;
-    }
-    if (args.query !== undefined) {
-      this.query = args.query;
-    }
-  }
-};
-RelatedNotesResult.prototype = {};
-RelatedNotesResult.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.LIST) {
-        var _size136 = 0;
-        var _rtmp3140;
-        this.hits = [];
-        var _etype139 = 0;
-        _rtmp3140 = input.readListBegin();
-        _etype139 = _rtmp3140.etype;
-        _size136 = _rtmp3140.size;
-        for (var _i141 = 0; _i141 < _size136; ++_i141)
-        {
-          var elem142 = null;
-          elem142 = new RelatedNotesHit();
-          elem142.read(input);
-          this.hits.push(elem142);
-        }
-        input.readListEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.I32) {
-        this.totalNotes = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I64) {
-        this.searchTime = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.STRING) {
-        this.query = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RelatedNotesResult.prototype.write = function(output) {
-  output.writeStructBegin('RelatedNotesResult');
-  if (this.hits) {
-    output.writeFieldBegin('hits', Thrift.Type.LIST, 1);
-    output.writeListBegin(Thrift.Type.STRUCT, this.hits.length);
-    for (var iter143 in this.hits)
-    {
-      if (this.hits.hasOwnProperty(iter143))
-      {
-        iter143 = this.hits[iter143];
-        iter143.write(output);
-      }
-    }
-    output.writeListEnd();
-    output.writeFieldEnd();
-  }
-  if (this.totalNotes) {
-    output.writeFieldBegin('totalNotes', Thrift.Type.I32, 2);
-    output.writeI32(this.totalNotes);
-    output.writeFieldEnd();
-  }
-  if (this.searchTime) {
-    output.writeFieldBegin('searchTime', Thrift.Type.I64, 3);
-    output.writeI64(this.searchTime);
-    output.writeFieldEnd();
-  }
-  if (this.query) {
-    output.writeFieldBegin('query', Thrift.Type.STRING, 4);
-    output.writeString(this.query);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
 NoteMetadata = function(args) {
   this.guid = null;
   this.title = null;
@@ -2306,18 +1328,18 @@ NoteMetadata.prototype.read = function(input) {
       break;
       case 12:
       if (ftype == Thrift.Type.LIST) {
-        var _size144 = 0;
-        var _rtmp3148;
+        var _size120 = 0;
+        var _rtmp3124;
         this.tagGuids = [];
-        var _etype147 = 0;
-        _rtmp3148 = input.readListBegin();
-        _etype147 = _rtmp3148.etype;
-        _size144 = _rtmp3148.size;
-        for (var _i149 = 0; _i149 < _size144; ++_i149)
+        var _etype123 = 0;
+        _rtmp3124 = input.readListBegin();
+        _etype123 = _rtmp3124.etype;
+        _size120 = _rtmp3124.size;
+        for (var _i125 = 0; _i125 < _size120; ++_i125)
         {
-          var elem150 = null;
-          elem150 = input.readString().value;
-          this.tagGuids.push(elem150);
+          var elem126 = null;
+          elem126 = input.readString().value;
+          this.tagGuids.push(elem126);
         }
         input.readListEnd();
       } else {
@@ -2395,12 +1417,12 @@ NoteMetadata.prototype.write = function(output) {
   if (this.tagGuids) {
     output.writeFieldBegin('tagGuids', Thrift.Type.LIST, 12);
     output.writeListBegin(Thrift.Type.STRING, this.tagGuids.length);
-    for (var iter151 in this.tagGuids)
+    for (var iter127 in this.tagGuids)
     {
-      if (this.tagGuids.hasOwnProperty(iter151))
+      if (this.tagGuids.hasOwnProperty(iter127))
       {
-        iter151 = this.tagGuids[iter151];
-        output.writeString(iter151);
+        iter127 = this.tagGuids[iter127];
+        output.writeString(iter127);
       }
     }
     output.writeListEnd();
@@ -2484,19 +1506,19 @@ NotesMetadataList.prototype.read = function(input) {
       break;
       case 3:
       if (ftype == Thrift.Type.LIST) {
-        var _size152 = 0;
-        var _rtmp3156;
+        var _size128 = 0;
+        var _rtmp3132;
         this.notes = [];
-        var _etype155 = 0;
-        _rtmp3156 = input.readListBegin();
-        _etype155 = _rtmp3156.etype;
-        _size152 = _rtmp3156.size;
-        for (var _i157 = 0; _i157 < _size152; ++_i157)
+        var _etype131 = 0;
+        _rtmp3132 = input.readListBegin();
+        _etype131 = _rtmp3132.etype;
+        _size128 = _rtmp3132.size;
+        for (var _i133 = 0; _i133 < _size128; ++_i133)
         {
-          var elem158 = null;
-          elem158 = new NoteMetadata();
-          elem158.read(input);
-          this.notes.push(elem158);
+          var elem134 = null;
+          elem134 = new NoteMetadata();
+          elem134.read(input);
+          this.notes.push(elem134);
         }
         input.readListEnd();
       } else {
@@ -2505,18 +1527,18 @@ NotesMetadataList.prototype.read = function(input) {
       break;
       case 4:
       if (ftype == Thrift.Type.LIST) {
-        var _size159 = 0;
-        var _rtmp3163;
+        var _size135 = 0;
+        var _rtmp3139;
         this.stoppedWords = [];
-        var _etype162 = 0;
-        _rtmp3163 = input.readListBegin();
-        _etype162 = _rtmp3163.etype;
-        _size159 = _rtmp3163.size;
-        for (var _i164 = 0; _i164 < _size159; ++_i164)
+        var _etype138 = 0;
+        _rtmp3139 = input.readListBegin();
+        _etype138 = _rtmp3139.etype;
+        _size135 = _rtmp3139.size;
+        for (var _i140 = 0; _i140 < _size135; ++_i140)
         {
-          var elem165 = null;
-          elem165 = input.readString().value;
-          this.stoppedWords.push(elem165);
+          var elem141 = null;
+          elem141 = input.readString().value;
+          this.stoppedWords.push(elem141);
         }
         input.readListEnd();
       } else {
@@ -2525,18 +1547,18 @@ NotesMetadataList.prototype.read = function(input) {
       break;
       case 5:
       if (ftype == Thrift.Type.LIST) {
-        var _size166 = 0;
-        var _rtmp3170;
+        var _size142 = 0;
+        var _rtmp3146;
         this.searchedWords = [];
-        var _etype169 = 0;
-        _rtmp3170 = input.readListBegin();
-        _etype169 = _rtmp3170.etype;
-        _size166 = _rtmp3170.size;
-        for (var _i171 = 0; _i171 < _size166; ++_i171)
+        var _etype145 = 0;
+        _rtmp3146 = input.readListBegin();
+        _etype145 = _rtmp3146.etype;
+        _size142 = _rtmp3146.size;
+        for (var _i147 = 0; _i147 < _size142; ++_i147)
         {
-          var elem172 = null;
-          elem172 = input.readString().value;
-          this.searchedWords.push(elem172);
+          var elem148 = null;
+          elem148 = input.readString().value;
+          this.searchedWords.push(elem148);
         }
         input.readListEnd();
       } else {
@@ -2574,12 +1596,12 @@ NotesMetadataList.prototype.write = function(output) {
   if (this.notes) {
     output.writeFieldBegin('notes', Thrift.Type.LIST, 3);
     output.writeListBegin(Thrift.Type.STRUCT, this.notes.length);
-    for (var iter173 in this.notes)
+    for (var iter149 in this.notes)
     {
-      if (this.notes.hasOwnProperty(iter173))
+      if (this.notes.hasOwnProperty(iter149))
       {
-        iter173 = this.notes[iter173];
-        iter173.write(output);
+        iter149 = this.notes[iter149];
+        iter149.write(output);
       }
     }
     output.writeListEnd();
@@ -2588,12 +1610,12 @@ NotesMetadataList.prototype.write = function(output) {
   if (this.stoppedWords) {
     output.writeFieldBegin('stoppedWords', Thrift.Type.LIST, 4);
     output.writeListBegin(Thrift.Type.STRING, this.stoppedWords.length);
-    for (var iter174 in this.stoppedWords)
+    for (var iter150 in this.stoppedWords)
     {
-      if (this.stoppedWords.hasOwnProperty(iter174))
+      if (this.stoppedWords.hasOwnProperty(iter150))
       {
-        iter174 = this.stoppedWords[iter174];
-        output.writeString(iter174);
+        iter150 = this.stoppedWords[iter150];
+        output.writeString(iter150);
       }
     }
     output.writeListEnd();
@@ -2602,12 +1624,12 @@ NotesMetadataList.prototype.write = function(output) {
   if (this.searchedWords) {
     output.writeFieldBegin('searchedWords', Thrift.Type.LIST, 5);
     output.writeListBegin(Thrift.Type.STRING, this.searchedWords.length);
-    for (var iter175 in this.searchedWords)
+    for (var iter151 in this.searchedWords)
     {
-      if (this.searchedWords.hasOwnProperty(iter175))
+      if (this.searchedWords.hasOwnProperty(iter151))
       {
-        iter175 = this.searchedWords[iter175];
-        output.writeString(iter175);
+        iter151 = this.searchedWords[iter151];
+        output.writeString(iter151);
       }
     }
     output.writeListEnd();
@@ -2849,27 +1871,27 @@ NoteCollectionCounts.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.MAP) {
-        var _size176 = 0;
-        var _rtmp3180;
+        var _size152 = 0;
+        var _rtmp3156;
         this.notebookCounts = {};
-        var _ktype177 = 0;
-        var _vtype178 = 0;
-        _rtmp3180 = input.readMapBegin();
-        _ktype177 = _rtmp3180.ktype;
-        _vtype178 = _rtmp3180.vtype;
-        _size176 = _rtmp3180.size;
-        for (var _i181 = 0; _i181 < _size176; ++_i181)
+        var _ktype153 = 0;
+        var _vtype154 = 0;
+        _rtmp3156 = input.readMapBegin();
+        _ktype153 = _rtmp3156.ktype;
+        _vtype154 = _rtmp3156.vtype;
+        _size152 = _rtmp3156.size;
+        for (var _i157 = 0; _i157 < _size152; ++_i157)
         {
-          if (_i181 > 0 ) {
+          if (_i157 > 0 ) {
             if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
               input.rstack.pop();
             }
           }
-          var key182 = null;
-          var val183 = null;
-          key182 = input.readString().value;
-          val183 = input.readI32().value;
-          this.notebookCounts[key182] = val183;
+          var key158 = null;
+          var val159 = null;
+          key158 = input.readString().value;
+          val159 = input.readI32().value;
+          this.notebookCounts[key158] = val159;
         }
         input.readMapEnd();
       } else {
@@ -2878,27 +1900,27 @@ NoteCollectionCounts.prototype.read = function(input) {
       break;
       case 2:
       if (ftype == Thrift.Type.MAP) {
-        var _size184 = 0;
-        var _rtmp3188;
+        var _size160 = 0;
+        var _rtmp3164;
         this.tagCounts = {};
-        var _ktype185 = 0;
-        var _vtype186 = 0;
-        _rtmp3188 = input.readMapBegin();
-        _ktype185 = _rtmp3188.ktype;
-        _vtype186 = _rtmp3188.vtype;
-        _size184 = _rtmp3188.size;
-        for (var _i189 = 0; _i189 < _size184; ++_i189)
+        var _ktype161 = 0;
+        var _vtype162 = 0;
+        _rtmp3164 = input.readMapBegin();
+        _ktype161 = _rtmp3164.ktype;
+        _vtype162 = _rtmp3164.vtype;
+        _size160 = _rtmp3164.size;
+        for (var _i165 = 0; _i165 < _size160; ++_i165)
         {
-          if (_i189 > 0 ) {
+          if (_i165 > 0 ) {
             if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
               input.rstack.pop();
             }
           }
-          var key190 = null;
-          var val191 = null;
-          key190 = input.readString().value;
-          val191 = input.readI32().value;
-          this.tagCounts[key190] = val191;
+          var key166 = null;
+          var val167 = null;
+          key166 = input.readString().value;
+          val167 = input.readI32().value;
+          this.tagCounts[key166] = val167;
         }
         input.readMapEnd();
       } else {
@@ -2926,13 +1948,13 @@ NoteCollectionCounts.prototype.write = function(output) {
   if (this.notebookCounts) {
     output.writeFieldBegin('notebookCounts', Thrift.Type.MAP, 1);
     output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.I32, Thrift.objectLength(this.notebookCounts));
-    for (var kiter192 in this.notebookCounts)
+    for (var kiter168 in this.notebookCounts)
     {
-      if (this.notebookCounts.hasOwnProperty(kiter192))
+      if (this.notebookCounts.hasOwnProperty(kiter168))
       {
-        var viter193 = this.notebookCounts[kiter192];
-        output.writeString(kiter192);
-        output.writeI32(viter193);
+        var viter169 = this.notebookCounts[kiter168];
+        output.writeString(kiter168);
+        output.writeI32(viter169);
       }
     }
     output.writeMapEnd();
@@ -2941,13 +1963,13 @@ NoteCollectionCounts.prototype.write = function(output) {
   if (this.tagCounts) {
     output.writeFieldBegin('tagCounts', Thrift.Type.MAP, 2);
     output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.I32, Thrift.objectLength(this.tagCounts));
-    for (var kiter194 in this.tagCounts)
+    for (var kiter170 in this.tagCounts)
     {
-      if (this.tagCounts.hasOwnProperty(kiter194))
+      if (this.tagCounts.hasOwnProperty(kiter170))
       {
-        var viter195 = this.tagCounts[kiter194];
-        output.writeString(kiter194);
-        output.writeI32(viter195);
+        var viter171 = this.tagCounts[kiter170];
+        output.writeString(kiter170);
+        output.writeI32(viter171);
       }
     }
     output.writeMapEnd();
@@ -3088,19 +2110,19 @@ AdParameters.prototype.read = function(input) {
       break;
       case 4:
       if (ftype == Thrift.Type.LIST) {
-        var _size196 = 0;
-        var _rtmp3200;
+        var _size172 = 0;
+        var _rtmp3176;
         this.impressions = [];
-        var _etype199 = 0;
-        _rtmp3200 = input.readListBegin();
-        _etype199 = _rtmp3200.etype;
-        _size196 = _rtmp3200.size;
-        for (var _i201 = 0; _i201 < _size196; ++_i201)
+        var _etype175 = 0;
+        _rtmp3176 = input.readListBegin();
+        _etype175 = _rtmp3176.etype;
+        _size172 = _rtmp3176.size;
+        for (var _i177 = 0; _i177 < _size172; ++_i177)
         {
-          var elem202 = null;
-          elem202 = new AdImpressions();
-          elem202.read(input);
-          this.impressions.push(elem202);
+          var elem178 = null;
+          elem178 = new AdImpressions();
+          elem178.read(input);
+          this.impressions.push(elem178);
         }
         input.readListEnd();
       } else {
@@ -3116,27 +2138,27 @@ AdParameters.prototype.read = function(input) {
       break;
       case 6:
       if (ftype == Thrift.Type.MAP) {
-        var _size203 = 0;
-        var _rtmp3207;
+        var _size179 = 0;
+        var _rtmp3183;
         this.clientProperties = {};
-        var _ktype204 = 0;
-        var _vtype205 = 0;
-        _rtmp3207 = input.readMapBegin();
-        _ktype204 = _rtmp3207.ktype;
-        _vtype205 = _rtmp3207.vtype;
-        _size203 = _rtmp3207.size;
-        for (var _i208 = 0; _i208 < _size203; ++_i208)
+        var _ktype180 = 0;
+        var _vtype181 = 0;
+        _rtmp3183 = input.readMapBegin();
+        _ktype180 = _rtmp3183.ktype;
+        _vtype181 = _rtmp3183.vtype;
+        _size179 = _rtmp3183.size;
+        for (var _i184 = 0; _i184 < _size179; ++_i184)
         {
-          if (_i208 > 0 ) {
+          if (_i184 > 0 ) {
             if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
               input.rstack.pop();
             }
           }
-          var key209 = null;
-          var val210 = null;
-          key209 = input.readString().value;
-          val210 = input.readString().value;
-          this.clientProperties[key209] = val210;
+          var key185 = null;
+          var val186 = null;
+          key185 = input.readString().value;
+          val186 = input.readString().value;
+          this.clientProperties[key185] = val186;
         }
         input.readMapEnd();
       } else {
@@ -3162,12 +2184,12 @@ AdParameters.prototype.write = function(output) {
   if (this.impressions) {
     output.writeFieldBegin('impressions', Thrift.Type.LIST, 4);
     output.writeListBegin(Thrift.Type.STRUCT, this.impressions.length);
-    for (var iter211 in this.impressions)
+    for (var iter187 in this.impressions)
     {
-      if (this.impressions.hasOwnProperty(iter211))
+      if (this.impressions.hasOwnProperty(iter187))
       {
-        iter211 = this.impressions[iter211];
-        iter211.write(output);
+        iter187 = this.impressions[iter187];
+        iter187.write(output);
       }
     }
     output.writeListEnd();
@@ -3181,13 +2203,13 @@ AdParameters.prototype.write = function(output) {
   if (this.clientProperties) {
     output.writeFieldBegin('clientProperties', Thrift.Type.MAP, 6);
     output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.clientProperties));
-    for (var kiter212 in this.clientProperties)
+    for (var kiter188 in this.clientProperties)
     {
-      if (this.clientProperties.hasOwnProperty(kiter212))
+      if (this.clientProperties.hasOwnProperty(kiter188))
       {
-        var viter213 = this.clientProperties[kiter212];
-        output.writeString(kiter212);
-        output.writeString(viter213);
+        var viter189 = this.clientProperties[kiter188];
+        output.writeString(kiter188);
+        output.writeString(viter189);
       }
     }
     output.writeMapEnd();
@@ -3257,18 +2279,18 @@ NoteEmailParameters.prototype.read = function(input) {
       break;
       case 3:
       if (ftype == Thrift.Type.LIST) {
-        var _size214 = 0;
-        var _rtmp3218;
+        var _size190 = 0;
+        var _rtmp3194;
         this.toAddresses = [];
-        var _etype217 = 0;
-        _rtmp3218 = input.readListBegin();
-        _etype217 = _rtmp3218.etype;
-        _size214 = _rtmp3218.size;
-        for (var _i219 = 0; _i219 < _size214; ++_i219)
+        var _etype193 = 0;
+        _rtmp3194 = input.readListBegin();
+        _etype193 = _rtmp3194.etype;
+        _size190 = _rtmp3194.size;
+        for (var _i195 = 0; _i195 < _size190; ++_i195)
         {
-          var elem220 = null;
-          elem220 = input.readString().value;
-          this.toAddresses.push(elem220);
+          var elem196 = null;
+          elem196 = input.readString().value;
+          this.toAddresses.push(elem196);
         }
         input.readListEnd();
       } else {
@@ -3277,18 +2299,18 @@ NoteEmailParameters.prototype.read = function(input) {
       break;
       case 4:
       if (ftype == Thrift.Type.LIST) {
-        var _size221 = 0;
-        var _rtmp3225;
+        var _size197 = 0;
+        var _rtmp3201;
         this.ccAddresses = [];
-        var _etype224 = 0;
-        _rtmp3225 = input.readListBegin();
-        _etype224 = _rtmp3225.etype;
-        _size221 = _rtmp3225.size;
-        for (var _i226 = 0; _i226 < _size221; ++_i226)
+        var _etype200 = 0;
+        _rtmp3201 = input.readListBegin();
+        _etype200 = _rtmp3201.etype;
+        _size197 = _rtmp3201.size;
+        for (var _i202 = 0; _i202 < _size197; ++_i202)
         {
-          var elem227 = null;
-          elem227 = input.readString().value;
-          this.ccAddresses.push(elem227);
+          var elem203 = null;
+          elem203 = input.readString().value;
+          this.ccAddresses.push(elem203);
         }
         input.readListEnd();
       } else {
@@ -3333,12 +2355,12 @@ NoteEmailParameters.prototype.write = function(output) {
   if (this.toAddresses) {
     output.writeFieldBegin('toAddresses', Thrift.Type.LIST, 3);
     output.writeListBegin(Thrift.Type.STRING, this.toAddresses.length);
-    for (var iter228 in this.toAddresses)
+    for (var iter204 in this.toAddresses)
     {
-      if (this.toAddresses.hasOwnProperty(iter228))
+      if (this.toAddresses.hasOwnProperty(iter204))
       {
-        iter228 = this.toAddresses[iter228];
-        output.writeString(iter228);
+        iter204 = this.toAddresses[iter204];
+        output.writeString(iter204);
       }
     }
     output.writeListEnd();
@@ -3347,12 +2369,12 @@ NoteEmailParameters.prototype.write = function(output) {
   if (this.ccAddresses) {
     output.writeFieldBegin('ccAddresses', Thrift.Type.LIST, 4);
     output.writeListBegin(Thrift.Type.STRING, this.ccAddresses.length);
-    for (var iter229 in this.ccAddresses)
+    for (var iter205 in this.ccAddresses)
     {
-      if (this.ccAddresses.hasOwnProperty(iter229))
+      if (this.ccAddresses.hasOwnProperty(iter205))
       {
-        iter229 = this.ccAddresses[iter229];
-        output.writeString(iter229);
+        iter205 = this.ccAddresses[iter205];
+        output.writeString(iter205);
       }
     }
     output.writeListEnd();
@@ -3464,6 +2486,358 @@ NoteVersionId.prototype.write = function(output) {
   if (this.title) {
     output.writeFieldBegin('title', Thrift.Type.STRING, 4);
     output.writeString(this.title);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ClientUsageMetrics = function(args) {
+  this.sessions = null;
+  if (args) {
+    if (args.sessions !== undefined) {
+      this.sessions = args.sessions;
+    }
+  }
+};
+ClientUsageMetrics.prototype = {};
+ClientUsageMetrics.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.sessions = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ClientUsageMetrics.prototype.write = function(output) {
+  output.writeStructBegin('ClientUsageMetrics');
+  if (this.sessions) {
+    output.writeFieldBegin('sessions', Thrift.Type.I32, 1);
+    output.writeI32(this.sessions);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+RelatedQuery = function(args) {
+  this.noteGuid = null;
+  this.plainText = null;
+  if (args) {
+    if (args.noteGuid !== undefined) {
+      this.noteGuid = args.noteGuid;
+    }
+    if (args.plainText !== undefined) {
+      this.plainText = args.plainText;
+    }
+  }
+};
+RelatedQuery.prototype = {};
+RelatedQuery.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.noteGuid = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.plainText = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+RelatedQuery.prototype.write = function(output) {
+  output.writeStructBegin('RelatedQuery');
+  if (this.noteGuid) {
+    output.writeFieldBegin('noteGuid', Thrift.Type.STRING, 1);
+    output.writeString(this.noteGuid);
+    output.writeFieldEnd();
+  }
+  if (this.plainText) {
+    output.writeFieldBegin('plainText', Thrift.Type.STRING, 2);
+    output.writeString(this.plainText);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+RelatedResult = function(args) {
+  this.notes = null;
+  this.notebooks = null;
+  this.tags = null;
+  if (args) {
+    if (args.notes !== undefined) {
+      this.notes = args.notes;
+    }
+    if (args.notebooks !== undefined) {
+      this.notebooks = args.notebooks;
+    }
+    if (args.tags !== undefined) {
+      this.tags = args.tags;
+    }
+  }
+};
+RelatedResult.prototype = {};
+RelatedResult.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.LIST) {
+        var _size206 = 0;
+        var _rtmp3210;
+        this.notes = [];
+        var _etype209 = 0;
+        _rtmp3210 = input.readListBegin();
+        _etype209 = _rtmp3210.etype;
+        _size206 = _rtmp3210.size;
+        for (var _i211 = 0; _i211 < _size206; ++_i211)
+        {
+          var elem212 = null;
+          elem212 = new Note();
+          elem212.read(input);
+          this.notes.push(elem212);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.LIST) {
+        var _size213 = 0;
+        var _rtmp3217;
+        this.notebooks = [];
+        var _etype216 = 0;
+        _rtmp3217 = input.readListBegin();
+        _etype216 = _rtmp3217.etype;
+        _size213 = _rtmp3217.size;
+        for (var _i218 = 0; _i218 < _size213; ++_i218)
+        {
+          var elem219 = null;
+          elem219 = new Notebook();
+          elem219.read(input);
+          this.notebooks.push(elem219);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.LIST) {
+        var _size220 = 0;
+        var _rtmp3224;
+        this.tags = [];
+        var _etype223 = 0;
+        _rtmp3224 = input.readListBegin();
+        _etype223 = _rtmp3224.etype;
+        _size220 = _rtmp3224.size;
+        for (var _i225 = 0; _i225 < _size220; ++_i225)
+        {
+          var elem226 = null;
+          elem226 = new Tag();
+          elem226.read(input);
+          this.tags.push(elem226);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+RelatedResult.prototype.write = function(output) {
+  output.writeStructBegin('RelatedResult');
+  if (this.notes) {
+    output.writeFieldBegin('notes', Thrift.Type.LIST, 1);
+    output.writeListBegin(Thrift.Type.STRUCT, this.notes.length);
+    for (var iter227 in this.notes)
+    {
+      if (this.notes.hasOwnProperty(iter227))
+      {
+        iter227 = this.notes[iter227];
+        iter227.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.notebooks) {
+    output.writeFieldBegin('notebooks', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRUCT, this.notebooks.length);
+    for (var iter228 in this.notebooks)
+    {
+      if (this.notebooks.hasOwnProperty(iter228))
+      {
+        iter228 = this.notebooks[iter228];
+        iter228.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.tags) {
+    output.writeFieldBegin('tags', Thrift.Type.LIST, 3);
+    output.writeListBegin(Thrift.Type.STRUCT, this.tags.length);
+    for (var iter229 in this.tags)
+    {
+      if (this.tags.hasOwnProperty(iter229))
+      {
+        iter229 = this.tags[iter229];
+        iter229.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+RelatedResultSpec = function(args) {
+  this.maxNotes = null;
+  this.maxNotebooks = null;
+  this.maxTags = null;
+  if (args) {
+    if (args.maxNotes !== undefined) {
+      this.maxNotes = args.maxNotes;
+    }
+    if (args.maxNotebooks !== undefined) {
+      this.maxNotebooks = args.maxNotebooks;
+    }
+    if (args.maxTags !== undefined) {
+      this.maxTags = args.maxTags;
+    }
+  }
+};
+RelatedResultSpec.prototype = {};
+RelatedResultSpec.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.maxNotes = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.maxNotebooks = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.maxTags = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+RelatedResultSpec.prototype.write = function(output) {
+  output.writeStructBegin('RelatedResultSpec');
+  if (this.maxNotes) {
+    output.writeFieldBegin('maxNotes', Thrift.Type.I32, 1);
+    output.writeI32(this.maxNotes);
+    output.writeFieldEnd();
+  }
+  if (this.maxNotebooks) {
+    output.writeFieldBegin('maxNotebooks', Thrift.Type.I32, 2);
+    output.writeI32(this.maxNotebooks);
+    output.writeFieldEnd();
+  }
+  if (this.maxTags) {
+    output.writeFieldBegin('maxTags', Thrift.Type.I32, 3);
+    output.writeI32(this.maxTags);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

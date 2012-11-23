@@ -10,7 +10,7 @@
 UserStore_checkVersion_args = function(args) {
   this.clientName = null;
   this.edamVersionMajor = 1;
-  this.edamVersionMinor = 21;
+  this.edamVersionMinor = 22;
   if (args) {
     if (args.clientName !== undefined) {
       this.clientName = args.clientName;
@@ -1144,18 +1144,12 @@ UserStoreClient = function(input, output) {
     this.seqid = 0;
 };
 UserStoreClient.prototype = {};
-UserStoreClient.prototype.checkVersion = function(clientName, edamVersionMajor, edamVersionMinor, callback) {
-  if (callback === undefined) {
-    this.send_checkVersion(clientName, edamVersionMajor, edamVersionMinor);
-    return this.recv_checkVersion();
-  } else {
-    var postData = this.send_checkVersion(clientName, edamVersionMajor, edamVersionMinor, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_checkVersion);
-  }
+UserStoreClient.prototype.checkVersion = function(clientName, edamVersionMajor, edamVersionMinor) {
+  this.send_checkVersion(clientName, edamVersionMajor, edamVersionMinor);
+  return this.recv_checkVersion();
 };
 
-UserStoreClient.prototype.send_checkVersion = function(clientName, edamVersionMajor, edamVersionMinor, callback) {
+UserStoreClient.prototype.send_checkVersion = function(clientName, edamVersionMajor, edamVersionMinor) {
   this.output.writeMessageBegin('checkVersion', Thrift.MessageType.CALL, this.seqid);
   var args = new UserStore_checkVersion_args();
   args.clientName = clientName;
@@ -1163,7 +1157,7 @@ UserStoreClient.prototype.send_checkVersion = function(clientName, edamVersionMa
   args.edamVersionMinor = edamVersionMinor;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 UserStoreClient.prototype.recv_checkVersion = function() {
@@ -1186,24 +1180,18 @@ UserStoreClient.prototype.recv_checkVersion = function() {
   }
   throw 'checkVersion failed: unknown result';
 };
-UserStoreClient.prototype.getBootstrapInfo = function(locale, callback) {
-  if (callback === undefined) {
-    this.send_getBootstrapInfo(locale);
-    return this.recv_getBootstrapInfo();
-  } else {
-    var postData = this.send_getBootstrapInfo(locale, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getBootstrapInfo);
-  }
+UserStoreClient.prototype.getBootstrapInfo = function(locale) {
+  this.send_getBootstrapInfo(locale);
+  return this.recv_getBootstrapInfo();
 };
 
-UserStoreClient.prototype.send_getBootstrapInfo = function(locale, callback) {
+UserStoreClient.prototype.send_getBootstrapInfo = function(locale) {
   this.output.writeMessageBegin('getBootstrapInfo', Thrift.MessageType.CALL, this.seqid);
   var args = new UserStore_getBootstrapInfo_args();
   args.locale = locale;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 UserStoreClient.prototype.recv_getBootstrapInfo = function() {
@@ -1226,18 +1214,12 @@ UserStoreClient.prototype.recv_getBootstrapInfo = function() {
   }
   throw 'getBootstrapInfo failed: unknown result';
 };
-UserStoreClient.prototype.authenticate = function(username, password, consumerKey, consumerSecret, callback) {
-  if (callback === undefined) {
-    this.send_authenticate(username, password, consumerKey, consumerSecret);
-    return this.recv_authenticate();
-  } else {
-    var postData = this.send_authenticate(username, password, consumerKey, consumerSecret, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_authenticate);
-  }
+UserStoreClient.prototype.authenticate = function(username, password, consumerKey, consumerSecret) {
+  this.send_authenticate(username, password, consumerKey, consumerSecret);
+  return this.recv_authenticate();
 };
 
-UserStoreClient.prototype.send_authenticate = function(username, password, consumerKey, consumerSecret, callback) {
+UserStoreClient.prototype.send_authenticate = function(username, password, consumerKey, consumerSecret) {
   this.output.writeMessageBegin('authenticate', Thrift.MessageType.CALL, this.seqid);
   var args = new UserStore_authenticate_args();
   args.username = username;
@@ -1246,7 +1228,7 @@ UserStoreClient.prototype.send_authenticate = function(username, password, consu
   args.consumerSecret = consumerSecret;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 UserStoreClient.prototype.recv_authenticate = function() {
@@ -1275,24 +1257,18 @@ UserStoreClient.prototype.recv_authenticate = function() {
   }
   throw 'authenticate failed: unknown result';
 };
-UserStoreClient.prototype.refreshAuthentication = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_refreshAuthentication(authenticationToken);
-    return this.recv_refreshAuthentication();
-  } else {
-    var postData = this.send_refreshAuthentication(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_refreshAuthentication);
-  }
+UserStoreClient.prototype.refreshAuthentication = function(authenticationToken) {
+  this.send_refreshAuthentication(authenticationToken);
+  return this.recv_refreshAuthentication();
 };
 
-UserStoreClient.prototype.send_refreshAuthentication = function(authenticationToken, callback) {
+UserStoreClient.prototype.send_refreshAuthentication = function(authenticationToken) {
   this.output.writeMessageBegin('refreshAuthentication', Thrift.MessageType.CALL, this.seqid);
   var args = new UserStore_refreshAuthentication_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 UserStoreClient.prototype.recv_refreshAuthentication = function() {
@@ -1321,24 +1297,18 @@ UserStoreClient.prototype.recv_refreshAuthentication = function() {
   }
   throw 'refreshAuthentication failed: unknown result';
 };
-UserStoreClient.prototype.getUser = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_getUser(authenticationToken);
-    return this.recv_getUser();
-  } else {
-    var postData = this.send_getUser(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getUser);
-  }
+UserStoreClient.prototype.getUser = function(authenticationToken) {
+  this.send_getUser(authenticationToken);
+  return this.recv_getUser();
 };
 
-UserStoreClient.prototype.send_getUser = function(authenticationToken, callback) {
+UserStoreClient.prototype.send_getUser = function(authenticationToken) {
   this.output.writeMessageBegin('getUser', Thrift.MessageType.CALL, this.seqid);
   var args = new UserStore_getUser_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 UserStoreClient.prototype.recv_getUser = function() {
@@ -1367,24 +1337,18 @@ UserStoreClient.prototype.recv_getUser = function() {
   }
   throw 'getUser failed: unknown result';
 };
-UserStoreClient.prototype.getPublicUserInfo = function(username, callback) {
-  if (callback === undefined) {
-    this.send_getPublicUserInfo(username);
-    return this.recv_getPublicUserInfo();
-  } else {
-    var postData = this.send_getPublicUserInfo(username, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getPublicUserInfo);
-  }
+UserStoreClient.prototype.getPublicUserInfo = function(username) {
+  this.send_getPublicUserInfo(username);
+  return this.recv_getPublicUserInfo();
 };
 
-UserStoreClient.prototype.send_getPublicUserInfo = function(username, callback) {
+UserStoreClient.prototype.send_getPublicUserInfo = function(username) {
   this.output.writeMessageBegin('getPublicUserInfo', Thrift.MessageType.CALL, this.seqid);
   var args = new UserStore_getPublicUserInfo_args();
   args.username = username;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 UserStoreClient.prototype.recv_getPublicUserInfo = function() {
@@ -1416,24 +1380,18 @@ UserStoreClient.prototype.recv_getPublicUserInfo = function() {
   }
   throw 'getPublicUserInfo failed: unknown result';
 };
-UserStoreClient.prototype.getPremiumInfo = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_getPremiumInfo(authenticationToken);
-    return this.recv_getPremiumInfo();
-  } else {
-    var postData = this.send_getPremiumInfo(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getPremiumInfo);
-  }
+UserStoreClient.prototype.getPremiumInfo = function(authenticationToken) {
+  this.send_getPremiumInfo(authenticationToken);
+  return this.recv_getPremiumInfo();
 };
 
-UserStoreClient.prototype.send_getPremiumInfo = function(authenticationToken, callback) {
+UserStoreClient.prototype.send_getPremiumInfo = function(authenticationToken) {
   this.output.writeMessageBegin('getPremiumInfo', Thrift.MessageType.CALL, this.seqid);
   var args = new UserStore_getPremiumInfo_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 UserStoreClient.prototype.recv_getPremiumInfo = function() {
@@ -1462,24 +1420,18 @@ UserStoreClient.prototype.recv_getPremiumInfo = function() {
   }
   throw 'getPremiumInfo failed: unknown result';
 };
-UserStoreClient.prototype.getNoteStoreUrl = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_getNoteStoreUrl(authenticationToken);
-    return this.recv_getNoteStoreUrl();
-  } else {
-    var postData = this.send_getNoteStoreUrl(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNoteStoreUrl);
-  }
+UserStoreClient.prototype.getNoteStoreUrl = function(authenticationToken) {
+  this.send_getNoteStoreUrl(authenticationToken);
+  return this.recv_getNoteStoreUrl();
 };
 
-UserStoreClient.prototype.send_getNoteStoreUrl = function(authenticationToken, callback) {
+UserStoreClient.prototype.send_getNoteStoreUrl = function(authenticationToken) {
   this.output.writeMessageBegin('getNoteStoreUrl', Thrift.MessageType.CALL, this.seqid);
   var args = new UserStore_getNoteStoreUrl_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 UserStoreClient.prototype.recv_getNoteStoreUrl = function() {

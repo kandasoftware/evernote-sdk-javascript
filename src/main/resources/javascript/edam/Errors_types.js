@@ -20,7 +20,8 @@ EDAMErrorCode = {
 'LEN_TOO_SHORT' : 13,
 'LEN_TOO_LONG' : 14,
 'TOO_FEW' : 15,
-'TOO_MANY' : 16
+'TOO_MANY' : 16,
+'UNSUPPORTED_OPERATION' : 17
 };
 EDAMUserException = function(args) {
   this.errorCode = null;

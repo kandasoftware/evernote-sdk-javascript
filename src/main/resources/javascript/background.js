@@ -9,9 +9,8 @@ function get_list_notebooks() {
     if (noteStore) {
         //response is result array of notebooks
         //callback function process response
-        noteStore.listNotebooks(Eventnote.Auth.get_auth_token(), function(response){
-            console.log(response);
-        });
+        var response = noteStore.listNotebooks(Eventnote.Auth.get_auth_token());
+	console.log(response);
     }
 }
 
@@ -27,10 +26,9 @@ function create_note(){
     note.content = content;
     //response is a created note
     //callback function process response
-    noteStore.createNote(Eventnote.Auth.get_auth_token(),note, function(response){
-        console.log("note was created");
-        console.log(response);
-    });
+    var response = noteStore.createNote(Eventnote.Auth.get_auth_token(),note);
+    console.log("note was created");
+    console.log(response);
 }
 
 function get_user(){
@@ -41,9 +39,8 @@ function get_user(){
     if(userStore){
         //response is an active user
         //callback function process response
-        userStore.getUser(Eventnote.Auth.get_auth_token(), function(response){
-            console.log(response);
-        });
+        var response = userStore.getUser(Eventnote.Auth.get_auth_token());
+	console.log(response);
     }
 }
 

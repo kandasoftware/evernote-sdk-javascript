@@ -145,6 +145,158 @@ NoteStore_getSyncState_result.prototype.write = function(output) {
   return;
 };
 
+NoteStore_getSyncStateWithMetrics_args = function(args) {
+  this.authenticationToken = null;
+  this.clientMetrics = null;
+  if (args) {
+    if (args.authenticationToken !== undefined) {
+      this.authenticationToken = args.authenticationToken;
+    }
+    if (args.clientMetrics !== undefined) {
+      this.clientMetrics = args.clientMetrics;
+    }
+  }
+};
+NoteStore_getSyncStateWithMetrics_args.prototype = {};
+NoteStore_getSyncStateWithMetrics_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.authenticationToken = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.clientMetrics = new ClientUsageMetrics();
+        this.clientMetrics.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+NoteStore_getSyncStateWithMetrics_args.prototype.write = function(output) {
+  output.writeStructBegin('NoteStore_getSyncStateWithMetrics_args');
+  if (this.authenticationToken) {
+    output.writeFieldBegin('authenticationToken', Thrift.Type.STRING, 1);
+    output.writeString(this.authenticationToken);
+    output.writeFieldEnd();
+  }
+  if (this.clientMetrics) {
+    output.writeFieldBegin('clientMetrics', Thrift.Type.STRUCT, 2);
+    this.clientMetrics.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+NoteStore_getSyncStateWithMetrics_result = function(args) {
+  this.success = null;
+  this.userException = null;
+  this.systemException = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+    if (args.userException !== undefined) {
+      this.userException = args.userException;
+    }
+    if (args.systemException !== undefined) {
+      this.systemException = args.systemException;
+    }
+  }
+};
+NoteStore_getSyncStateWithMetrics_result.prototype = {};
+NoteStore_getSyncStateWithMetrics_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new SyncState();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.userException = new EDAMUserException();
+        this.userException.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.systemException = new EDAMSystemException();
+        this.systemException.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+NoteStore_getSyncStateWithMetrics_result.prototype.write = function(output) {
+  output.writeStructBegin('NoteStore_getSyncStateWithMetrics_result');
+  if (this.success) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.userException) {
+    output.writeFieldBegin('userException', Thrift.Type.STRUCT, 1);
+    this.userException.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.systemException) {
+    output.writeFieldBegin('systemException', Thrift.Type.STRUCT, 2);
+    this.systemException.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 NoteStore_getSyncChunk_args = function(args) {
   this.authenticationToken = null;
   this.afterUSN = null;
@@ -12964,14 +13116,10 @@ NoteStore_authenticateToSharedNote_result.prototype.write = function(output) {
   return;
 };
 
-NoteStore_findRelatedNotes_args = function(args) {
+NoteStore_findRelated_args = function(args) {
   this.authenticationToken = null;
   this.query = null;
-  this.offset = null;
-  this.maxNotes = null;
-  this.fillScores = null;
-  this.fillExplanation = null;
-  this.fillQuery = null;
+  this.resultSpec = null;
   if (args) {
     if (args.authenticationToken !== undefined) {
       this.authenticationToken = args.authenticationToken;
@@ -12979,25 +13127,13 @@ NoteStore_findRelatedNotes_args = function(args) {
     if (args.query !== undefined) {
       this.query = args.query;
     }
-    if (args.offset !== undefined) {
-      this.offset = args.offset;
-    }
-    if (args.maxNotes !== undefined) {
-      this.maxNotes = args.maxNotes;
-    }
-    if (args.fillScores !== undefined) {
-      this.fillScores = args.fillScores;
-    }
-    if (args.fillExplanation !== undefined) {
-      this.fillExplanation = args.fillExplanation;
-    }
-    if (args.fillQuery !== undefined) {
-      this.fillQuery = args.fillQuery;
+    if (args.resultSpec !== undefined) {
+      this.resultSpec = args.resultSpec;
     }
   }
 };
-NoteStore_findRelatedNotes_args.prototype = {};
-NoteStore_findRelatedNotes_args.prototype.read = function(input) {
+NoteStore_findRelated_args.prototype = {};
+NoteStore_findRelated_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -13019,43 +13155,16 @@ NoteStore_findRelatedNotes_args.prototype.read = function(input) {
       break;
       case 2:
       if (ftype == Thrift.Type.STRUCT) {
-        this.query = new RelatedNotesQuery();
+        this.query = new RelatedQuery();
         this.query.read(input);
       } else {
         input.skip(ftype);
       }
       break;
       case 3:
-      if (ftype == Thrift.Type.I32) {
-        this.offset = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.I32) {
-        this.maxNotes = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.BOOL) {
-        this.fillScores = input.readBool().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 6:
-      if (ftype == Thrift.Type.BOOL) {
-        this.fillExplanation = input.readBool().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 7:
-      if (ftype == Thrift.Type.BOOL) {
-        this.fillQuery = input.readBool().value;
+      if (ftype == Thrift.Type.STRUCT) {
+        this.resultSpec = new RelatedResultSpec();
+        this.resultSpec.read(input);
       } else {
         input.skip(ftype);
       }
@@ -13069,8 +13178,8 @@ NoteStore_findRelatedNotes_args.prototype.read = function(input) {
   return;
 };
 
-NoteStore_findRelatedNotes_args.prototype.write = function(output) {
-  output.writeStructBegin('NoteStore_findRelatedNotes_args');
+NoteStore_findRelated_args.prototype.write = function(output) {
+  output.writeStructBegin('NoteStore_findRelated_args');
   if (this.authenticationToken) {
     output.writeFieldBegin('authenticationToken', Thrift.Type.STRING, 1);
     output.writeString(this.authenticationToken);
@@ -13081,29 +13190,9 @@ NoteStore_findRelatedNotes_args.prototype.write = function(output) {
     this.query.write(output);
     output.writeFieldEnd();
   }
-  if (this.offset) {
-    output.writeFieldBegin('offset', Thrift.Type.I32, 3);
-    output.writeI32(this.offset);
-    output.writeFieldEnd();
-  }
-  if (this.maxNotes) {
-    output.writeFieldBegin('maxNotes', Thrift.Type.I32, 4);
-    output.writeI32(this.maxNotes);
-    output.writeFieldEnd();
-  }
-  if (this.fillScores) {
-    output.writeFieldBegin('fillScores', Thrift.Type.BOOL, 5);
-    output.writeBool(this.fillScores);
-    output.writeFieldEnd();
-  }
-  if (this.fillExplanation) {
-    output.writeFieldBegin('fillExplanation', Thrift.Type.BOOL, 6);
-    output.writeBool(this.fillExplanation);
-    output.writeFieldEnd();
-  }
-  if (this.fillQuery) {
-    output.writeFieldBegin('fillQuery', Thrift.Type.BOOL, 7);
-    output.writeBool(this.fillQuery);
+  if (this.resultSpec) {
+    output.writeFieldBegin('resultSpec', Thrift.Type.STRUCT, 3);
+    this.resultSpec.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -13111,11 +13200,11 @@ NoteStore_findRelatedNotes_args.prototype.write = function(output) {
   return;
 };
 
-NoteStore_findRelatedNotes_result = function(args) {
+NoteStore_findRelated_result = function(args) {
   this.success = null;
   this.userException = null;
-  this.notFoundException = null;
   this.systemException = null;
+  this.notFoundException = null;
   if (args) {
     if (args.success !== undefined) {
       this.success = args.success;
@@ -13123,16 +13212,16 @@ NoteStore_findRelatedNotes_result = function(args) {
     if (args.userException !== undefined) {
       this.userException = args.userException;
     }
-    if (args.notFoundException !== undefined) {
-      this.notFoundException = args.notFoundException;
-    }
     if (args.systemException !== undefined) {
       this.systemException = args.systemException;
     }
+    if (args.notFoundException !== undefined) {
+      this.notFoundException = args.notFoundException;
+    }
   }
 };
-NoteStore_findRelatedNotes_result.prototype = {};
-NoteStore_findRelatedNotes_result.prototype.read = function(input) {
+NoteStore_findRelated_result.prototype = {};
+NoteStore_findRelated_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -13147,7 +13236,7 @@ NoteStore_findRelatedNotes_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.STRUCT) {
-        this.success = new RelatedNotesResult();
+        this.success = new RelatedResult();
         this.success.read(input);
       } else {
         input.skip(ftype);
@@ -13163,16 +13252,16 @@ NoteStore_findRelatedNotes_result.prototype.read = function(input) {
       break;
       case 2:
       if (ftype == Thrift.Type.STRUCT) {
-        this.notFoundException = new EDAMNotFoundException();
-        this.notFoundException.read(input);
+        this.systemException = new EDAMSystemException();
+        this.systemException.read(input);
       } else {
         input.skip(ftype);
       }
       break;
       case 3:
       if (ftype == Thrift.Type.STRUCT) {
-        this.systemException = new EDAMSystemException();
-        this.systemException.read(input);
+        this.notFoundException = new EDAMNotFoundException();
+        this.notFoundException.read(input);
       } else {
         input.skip(ftype);
       }
@@ -13186,8 +13275,8 @@ NoteStore_findRelatedNotes_result.prototype.read = function(input) {
   return;
 };
 
-NoteStore_findRelatedNotes_result.prototype.write = function(output) {
-  output.writeStructBegin('NoteStore_findRelatedNotes_result');
+NoteStore_findRelated_result.prototype.write = function(output) {
+  output.writeStructBegin('NoteStore_findRelated_result');
   if (this.success) {
     output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
     this.success.write(output);
@@ -13198,14 +13287,14 @@ NoteStore_findRelatedNotes_result.prototype.write = function(output) {
     this.userException.write(output);
     output.writeFieldEnd();
   }
-  if (this.notFoundException) {
-    output.writeFieldBegin('notFoundException', Thrift.Type.STRUCT, 2);
-    this.notFoundException.write(output);
+  if (this.systemException) {
+    output.writeFieldBegin('systemException', Thrift.Type.STRUCT, 2);
+    this.systemException.write(output);
     output.writeFieldEnd();
   }
-  if (this.systemException) {
-    output.writeFieldBegin('systemException', Thrift.Type.STRUCT, 3);
-    this.systemException.write(output);
+  if (this.notFoundException) {
+    output.writeFieldBegin('notFoundException', Thrift.Type.STRUCT, 3);
+    this.notFoundException.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -13219,24 +13308,18 @@ NoteStoreClient = function(input, output) {
     this.seqid = 0;
 };
 NoteStoreClient.prototype = {};
-NoteStoreClient.prototype.getSyncState = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_getSyncState(authenticationToken);
-    return this.recv_getSyncState();
-  } else {
-    var postData = this.send_getSyncState(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getSyncState);
-  }
+NoteStoreClient.prototype.getSyncState = function(authenticationToken) {
+  this.send_getSyncState(authenticationToken);
+  return this.recv_getSyncState();
 };
 
-NoteStoreClient.prototype.send_getSyncState = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_getSyncState = function(authenticationToken) {
   this.output.writeMessageBegin('getSyncState', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getSyncState_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getSyncState = function() {
@@ -13265,18 +13348,53 @@ NoteStoreClient.prototype.recv_getSyncState = function() {
   }
   throw 'getSyncState failed: unknown result';
 };
-NoteStoreClient.prototype.getSyncChunk = function(authenticationToken, afterUSN, maxEntries, fullSyncOnly, callback) {
-  if (callback === undefined) {
-    this.send_getSyncChunk(authenticationToken, afterUSN, maxEntries, fullSyncOnly);
-    return this.recv_getSyncChunk();
-  } else {
-    var postData = this.send_getSyncChunk(authenticationToken, afterUSN, maxEntries, fullSyncOnly, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getSyncChunk);
-  }
+NoteStoreClient.prototype.getSyncStateWithMetrics = function(authenticationToken, clientMetrics) {
+  this.send_getSyncStateWithMetrics(authenticationToken, clientMetrics);
+  return this.recv_getSyncStateWithMetrics();
 };
 
-NoteStoreClient.prototype.send_getSyncChunk = function(authenticationToken, afterUSN, maxEntries, fullSyncOnly, callback) {
+NoteStoreClient.prototype.send_getSyncStateWithMetrics = function(authenticationToken, clientMetrics) {
+  this.output.writeMessageBegin('getSyncStateWithMetrics', Thrift.MessageType.CALL, this.seqid);
+  var args = new NoteStore_getSyncStateWithMetrics_args();
+  args.authenticationToken = authenticationToken;
+  args.clientMetrics = clientMetrics;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  return this.output.getTransport().flush();
+};
+
+NoteStoreClient.prototype.recv_getSyncStateWithMetrics = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new NoteStore_getSyncStateWithMetrics_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.userException) {
+    throw result.userException;
+  }
+  if (null !== result.systemException) {
+    throw result.systemException;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'getSyncStateWithMetrics failed: unknown result';
+};
+NoteStoreClient.prototype.getSyncChunk = function(authenticationToken, afterUSN, maxEntries, fullSyncOnly) {
+  this.send_getSyncChunk(authenticationToken, afterUSN, maxEntries, fullSyncOnly);
+  return this.recv_getSyncChunk();
+};
+
+NoteStoreClient.prototype.send_getSyncChunk = function(authenticationToken, afterUSN, maxEntries, fullSyncOnly) {
   this.output.writeMessageBegin('getSyncChunk', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getSyncChunk_args();
   args.authenticationToken = authenticationToken;
@@ -13285,7 +13403,7 @@ NoteStoreClient.prototype.send_getSyncChunk = function(authenticationToken, afte
   args.fullSyncOnly = fullSyncOnly;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getSyncChunk = function() {
@@ -13314,18 +13432,12 @@ NoteStoreClient.prototype.recv_getSyncChunk = function() {
   }
   throw 'getSyncChunk failed: unknown result';
 };
-NoteStoreClient.prototype.getFilteredSyncChunk = function(authenticationToken, afterUSN, maxEntries, filter, callback) {
-  if (callback === undefined) {
-    this.send_getFilteredSyncChunk(authenticationToken, afterUSN, maxEntries, filter);
-    return this.recv_getFilteredSyncChunk();
-  } else {
-    var postData = this.send_getFilteredSyncChunk(authenticationToken, afterUSN, maxEntries, filter, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getFilteredSyncChunk);
-  }
+NoteStoreClient.prototype.getFilteredSyncChunk = function(authenticationToken, afterUSN, maxEntries, filter) {
+  this.send_getFilteredSyncChunk(authenticationToken, afterUSN, maxEntries, filter);
+  return this.recv_getFilteredSyncChunk();
 };
 
-NoteStoreClient.prototype.send_getFilteredSyncChunk = function(authenticationToken, afterUSN, maxEntries, filter, callback) {
+NoteStoreClient.prototype.send_getFilteredSyncChunk = function(authenticationToken, afterUSN, maxEntries, filter) {
   this.output.writeMessageBegin('getFilteredSyncChunk', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getFilteredSyncChunk_args();
   args.authenticationToken = authenticationToken;
@@ -13334,7 +13446,7 @@ NoteStoreClient.prototype.send_getFilteredSyncChunk = function(authenticationTok
   args.filter = filter;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getFilteredSyncChunk = function() {
@@ -13363,25 +13475,19 @@ NoteStoreClient.prototype.recv_getFilteredSyncChunk = function() {
   }
   throw 'getFilteredSyncChunk failed: unknown result';
 };
-NoteStoreClient.prototype.getLinkedNotebookSyncState = function(authenticationToken, linkedNotebook, callback) {
-  if (callback === undefined) {
-    this.send_getLinkedNotebookSyncState(authenticationToken, linkedNotebook);
-    return this.recv_getLinkedNotebookSyncState();
-  } else {
-    var postData = this.send_getLinkedNotebookSyncState(authenticationToken, linkedNotebook, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getLinkedNotebookSyncState);
-  }
+NoteStoreClient.prototype.getLinkedNotebookSyncState = function(authenticationToken, linkedNotebook) {
+  this.send_getLinkedNotebookSyncState(authenticationToken, linkedNotebook);
+  return this.recv_getLinkedNotebookSyncState();
 };
 
-NoteStoreClient.prototype.send_getLinkedNotebookSyncState = function(authenticationToken, linkedNotebook, callback) {
+NoteStoreClient.prototype.send_getLinkedNotebookSyncState = function(authenticationToken, linkedNotebook) {
   this.output.writeMessageBegin('getLinkedNotebookSyncState', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getLinkedNotebookSyncState_args();
   args.authenticationToken = authenticationToken;
   args.linkedNotebook = linkedNotebook;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getLinkedNotebookSyncState = function() {
@@ -13413,18 +13519,12 @@ NoteStoreClient.prototype.recv_getLinkedNotebookSyncState = function() {
   }
   throw 'getLinkedNotebookSyncState failed: unknown result';
 };
-NoteStoreClient.prototype.getLinkedNotebookSyncChunk = function(authenticationToken, linkedNotebook, afterUSN, maxEntries, fullSyncOnly, callback) {
-  if (callback === undefined) {
-    this.send_getLinkedNotebookSyncChunk(authenticationToken, linkedNotebook, afterUSN, maxEntries, fullSyncOnly);
-    return this.recv_getLinkedNotebookSyncChunk();
-  } else {
-    var postData = this.send_getLinkedNotebookSyncChunk(authenticationToken, linkedNotebook, afterUSN, maxEntries, fullSyncOnly, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getLinkedNotebookSyncChunk);
-  }
+NoteStoreClient.prototype.getLinkedNotebookSyncChunk = function(authenticationToken, linkedNotebook, afterUSN, maxEntries, fullSyncOnly) {
+  this.send_getLinkedNotebookSyncChunk(authenticationToken, linkedNotebook, afterUSN, maxEntries, fullSyncOnly);
+  return this.recv_getLinkedNotebookSyncChunk();
 };
 
-NoteStoreClient.prototype.send_getLinkedNotebookSyncChunk = function(authenticationToken, linkedNotebook, afterUSN, maxEntries, fullSyncOnly, callback) {
+NoteStoreClient.prototype.send_getLinkedNotebookSyncChunk = function(authenticationToken, linkedNotebook, afterUSN, maxEntries, fullSyncOnly) {
   this.output.writeMessageBegin('getLinkedNotebookSyncChunk', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getLinkedNotebookSyncChunk_args();
   args.authenticationToken = authenticationToken;
@@ -13434,7 +13534,7 @@ NoteStoreClient.prototype.send_getLinkedNotebookSyncChunk = function(authenticat
   args.fullSyncOnly = fullSyncOnly;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getLinkedNotebookSyncChunk = function() {
@@ -13466,24 +13566,18 @@ NoteStoreClient.prototype.recv_getLinkedNotebookSyncChunk = function() {
   }
   throw 'getLinkedNotebookSyncChunk failed: unknown result';
 };
-NoteStoreClient.prototype.listNotebooks = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_listNotebooks(authenticationToken);
-    return this.recv_listNotebooks();
-  } else {
-    var postData = this.send_listNotebooks(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_listNotebooks);
-  }
+NoteStoreClient.prototype.listNotebooks = function(authenticationToken) {
+  this.send_listNotebooks(authenticationToken);
+  return this.recv_listNotebooks();
 };
 
-NoteStoreClient.prototype.send_listNotebooks = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_listNotebooks = function(authenticationToken) {
   this.output.writeMessageBegin('listNotebooks', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_listNotebooks_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_listNotebooks = function() {
@@ -13512,25 +13606,19 @@ NoteStoreClient.prototype.recv_listNotebooks = function() {
   }
   throw 'listNotebooks failed: unknown result';
 };
-NoteStoreClient.prototype.getNotebook = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getNotebook(authenticationToken, guid);
-    return this.recv_getNotebook();
-  } else {
-    var postData = this.send_getNotebook(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNotebook);
-  }
+NoteStoreClient.prototype.getNotebook = function(authenticationToken, guid) {
+  this.send_getNotebook(authenticationToken, guid);
+  return this.recv_getNotebook();
 };
 
-NoteStoreClient.prototype.send_getNotebook = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getNotebook = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getNotebook_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getNotebook = function() {
@@ -13562,24 +13650,18 @@ NoteStoreClient.prototype.recv_getNotebook = function() {
   }
   throw 'getNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.getDefaultNotebook = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_getDefaultNotebook(authenticationToken);
-    return this.recv_getDefaultNotebook();
-  } else {
-    var postData = this.send_getDefaultNotebook(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getDefaultNotebook);
-  }
+NoteStoreClient.prototype.getDefaultNotebook = function(authenticationToken) {
+  this.send_getDefaultNotebook(authenticationToken);
+  return this.recv_getDefaultNotebook();
 };
 
-NoteStoreClient.prototype.send_getDefaultNotebook = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_getDefaultNotebook = function(authenticationToken) {
   this.output.writeMessageBegin('getDefaultNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getDefaultNotebook_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getDefaultNotebook = function() {
@@ -13608,25 +13690,19 @@ NoteStoreClient.prototype.recv_getDefaultNotebook = function() {
   }
   throw 'getDefaultNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.createNotebook = function(authenticationToken, notebook, callback) {
-  if (callback === undefined) {
-    this.send_createNotebook(authenticationToken, notebook);
-    return this.recv_createNotebook();
-  } else {
-    var postData = this.send_createNotebook(authenticationToken, notebook, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_createNotebook);
-  }
+NoteStoreClient.prototype.createNotebook = function(authenticationToken, notebook) {
+  this.send_createNotebook(authenticationToken, notebook);
+  return this.recv_createNotebook();
 };
 
-NoteStoreClient.prototype.send_createNotebook = function(authenticationToken, notebook, callback) {
+NoteStoreClient.prototype.send_createNotebook = function(authenticationToken, notebook) {
   this.output.writeMessageBegin('createNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_createNotebook_args();
   args.authenticationToken = authenticationToken;
   args.notebook = notebook;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_createNotebook = function() {
@@ -13655,25 +13731,19 @@ NoteStoreClient.prototype.recv_createNotebook = function() {
   }
   throw 'createNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.updateNotebook = function(authenticationToken, notebook, callback) {
-  if (callback === undefined) {
-    this.send_updateNotebook(authenticationToken, notebook);
-    return this.recv_updateNotebook();
-  } else {
-    var postData = this.send_updateNotebook(authenticationToken, notebook, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_updateNotebook);
-  }
+NoteStoreClient.prototype.updateNotebook = function(authenticationToken, notebook) {
+  this.send_updateNotebook(authenticationToken, notebook);
+  return this.recv_updateNotebook();
 };
 
-NoteStoreClient.prototype.send_updateNotebook = function(authenticationToken, notebook, callback) {
+NoteStoreClient.prototype.send_updateNotebook = function(authenticationToken, notebook) {
   this.output.writeMessageBegin('updateNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_updateNotebook_args();
   args.authenticationToken = authenticationToken;
   args.notebook = notebook;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_updateNotebook = function() {
@@ -13705,25 +13775,19 @@ NoteStoreClient.prototype.recv_updateNotebook = function() {
   }
   throw 'updateNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.expungeNotebook = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_expungeNotebook(authenticationToken, guid);
-    return this.recv_expungeNotebook();
-  } else {
-    var postData = this.send_expungeNotebook(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_expungeNotebook);
-  }
+NoteStoreClient.prototype.expungeNotebook = function(authenticationToken, guid) {
+  this.send_expungeNotebook(authenticationToken, guid);
+  return this.recv_expungeNotebook();
 };
 
-NoteStoreClient.prototype.send_expungeNotebook = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_expungeNotebook = function(authenticationToken, guid) {
   this.output.writeMessageBegin('expungeNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_expungeNotebook_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_expungeNotebook = function() {
@@ -13755,24 +13819,18 @@ NoteStoreClient.prototype.recv_expungeNotebook = function() {
   }
   throw 'expungeNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.listTags = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_listTags(authenticationToken);
-    return this.recv_listTags();
-  } else {
-    var postData = this.send_listTags(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_listTags);
-  }
+NoteStoreClient.prototype.listTags = function(authenticationToken) {
+  this.send_listTags(authenticationToken);
+  return this.recv_listTags();
 };
 
-NoteStoreClient.prototype.send_listTags = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_listTags = function(authenticationToken) {
   this.output.writeMessageBegin('listTags', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_listTags_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_listTags = function() {
@@ -13801,25 +13859,19 @@ NoteStoreClient.prototype.recv_listTags = function() {
   }
   throw 'listTags failed: unknown result';
 };
-NoteStoreClient.prototype.listTagsByNotebook = function(authenticationToken, notebookGuid, callback) {
-  if (callback === undefined) {
-    this.send_listTagsByNotebook(authenticationToken, notebookGuid);
-    return this.recv_listTagsByNotebook();
-  } else {
-    var postData = this.send_listTagsByNotebook(authenticationToken, notebookGuid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_listTagsByNotebook);
-  }
+NoteStoreClient.prototype.listTagsByNotebook = function(authenticationToken, notebookGuid) {
+  this.send_listTagsByNotebook(authenticationToken, notebookGuid);
+  return this.recv_listTagsByNotebook();
 };
 
-NoteStoreClient.prototype.send_listTagsByNotebook = function(authenticationToken, notebookGuid, callback) {
+NoteStoreClient.prototype.send_listTagsByNotebook = function(authenticationToken, notebookGuid) {
   this.output.writeMessageBegin('listTagsByNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_listTagsByNotebook_args();
   args.authenticationToken = authenticationToken;
   args.notebookGuid = notebookGuid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_listTagsByNotebook = function() {
@@ -13851,25 +13903,19 @@ NoteStoreClient.prototype.recv_listTagsByNotebook = function() {
   }
   throw 'listTagsByNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.getTag = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getTag(authenticationToken, guid);
-    return this.recv_getTag();
-  } else {
-    var postData = this.send_getTag(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getTag);
-  }
+NoteStoreClient.prototype.getTag = function(authenticationToken, guid) {
+  this.send_getTag(authenticationToken, guid);
+  return this.recv_getTag();
 };
 
-NoteStoreClient.prototype.send_getTag = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getTag = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getTag', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getTag_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getTag = function() {
@@ -13901,25 +13947,19 @@ NoteStoreClient.prototype.recv_getTag = function() {
   }
   throw 'getTag failed: unknown result';
 };
-NoteStoreClient.prototype.createTag = function(authenticationToken, tag, callback) {
-  if (callback === undefined) {
-    this.send_createTag(authenticationToken, tag);
-    return this.recv_createTag();
-  } else {
-    var postData = this.send_createTag(authenticationToken, tag, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_createTag);
-  }
+NoteStoreClient.prototype.createTag = function(authenticationToken, tag) {
+  this.send_createTag(authenticationToken, tag);
+  return this.recv_createTag();
 };
 
-NoteStoreClient.prototype.send_createTag = function(authenticationToken, tag, callback) {
+NoteStoreClient.prototype.send_createTag = function(authenticationToken, tag) {
   this.output.writeMessageBegin('createTag', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_createTag_args();
   args.authenticationToken = authenticationToken;
   args.tag = tag;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_createTag = function() {
@@ -13951,25 +13991,19 @@ NoteStoreClient.prototype.recv_createTag = function() {
   }
   throw 'createTag failed: unknown result';
 };
-NoteStoreClient.prototype.updateTag = function(authenticationToken, tag, callback) {
-  if (callback === undefined) {
-    this.send_updateTag(authenticationToken, tag);
-    return this.recv_updateTag();
-  } else {
-    var postData = this.send_updateTag(authenticationToken, tag, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_updateTag);
-  }
+NoteStoreClient.prototype.updateTag = function(authenticationToken, tag) {
+  this.send_updateTag(authenticationToken, tag);
+  return this.recv_updateTag();
 };
 
-NoteStoreClient.prototype.send_updateTag = function(authenticationToken, tag, callback) {
+NoteStoreClient.prototype.send_updateTag = function(authenticationToken, tag) {
   this.output.writeMessageBegin('updateTag', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_updateTag_args();
   args.authenticationToken = authenticationToken;
   args.tag = tag;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_updateTag = function() {
@@ -14001,25 +14035,19 @@ NoteStoreClient.prototype.recv_updateTag = function() {
   }
   throw 'updateTag failed: unknown result';
 };
-NoteStoreClient.prototype.untagAll = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_untagAll(authenticationToken, guid);
-    this.recv_untagAll();
-  } else {
-    var postData = this.send_untagAll(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_untagAll);
-  }
+NoteStoreClient.prototype.untagAll = function(authenticationToken, guid) {
+  this.send_untagAll(authenticationToken, guid);
+  this.recv_untagAll();
 };
 
-NoteStoreClient.prototype.send_untagAll = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_untagAll = function(authenticationToken, guid) {
   this.output.writeMessageBegin('untagAll', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_untagAll_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_untagAll = function() {
@@ -14048,25 +14076,19 @@ NoteStoreClient.prototype.recv_untagAll = function() {
   }
   return;
 };
-NoteStoreClient.prototype.expungeTag = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_expungeTag(authenticationToken, guid);
-    return this.recv_expungeTag();
-  } else {
-    var postData = this.send_expungeTag(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_expungeTag);
-  }
+NoteStoreClient.prototype.expungeTag = function(authenticationToken, guid) {
+  this.send_expungeTag(authenticationToken, guid);
+  return this.recv_expungeTag();
 };
 
-NoteStoreClient.prototype.send_expungeTag = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_expungeTag = function(authenticationToken, guid) {
   this.output.writeMessageBegin('expungeTag', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_expungeTag_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_expungeTag = function() {
@@ -14098,24 +14120,18 @@ NoteStoreClient.prototype.recv_expungeTag = function() {
   }
   throw 'expungeTag failed: unknown result';
 };
-NoteStoreClient.prototype.listSearches = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_listSearches(authenticationToken);
-    return this.recv_listSearches();
-  } else {
-    var postData = this.send_listSearches(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_listSearches);
-  }
+NoteStoreClient.prototype.listSearches = function(authenticationToken) {
+  this.send_listSearches(authenticationToken);
+  return this.recv_listSearches();
 };
 
-NoteStoreClient.prototype.send_listSearches = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_listSearches = function(authenticationToken) {
   this.output.writeMessageBegin('listSearches', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_listSearches_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_listSearches = function() {
@@ -14144,25 +14160,19 @@ NoteStoreClient.prototype.recv_listSearches = function() {
   }
   throw 'listSearches failed: unknown result';
 };
-NoteStoreClient.prototype.getSearch = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getSearch(authenticationToken, guid);
-    return this.recv_getSearch();
-  } else {
-    var postData = this.send_getSearch(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getSearch);
-  }
+NoteStoreClient.prototype.getSearch = function(authenticationToken, guid) {
+  this.send_getSearch(authenticationToken, guid);
+  return this.recv_getSearch();
 };
 
-NoteStoreClient.prototype.send_getSearch = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getSearch = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getSearch', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getSearch_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getSearch = function() {
@@ -14194,25 +14204,19 @@ NoteStoreClient.prototype.recv_getSearch = function() {
   }
   throw 'getSearch failed: unknown result';
 };
-NoteStoreClient.prototype.createSearch = function(authenticationToken, search, callback) {
-  if (callback === undefined) {
-    this.send_createSearch(authenticationToken, search);
-    return this.recv_createSearch();
-  } else {
-    var postData = this.send_createSearch(authenticationToken, search, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_createSearch);
-  }
+NoteStoreClient.prototype.createSearch = function(authenticationToken, search) {
+  this.send_createSearch(authenticationToken, search);
+  return this.recv_createSearch();
 };
 
-NoteStoreClient.prototype.send_createSearch = function(authenticationToken, search, callback) {
+NoteStoreClient.prototype.send_createSearch = function(authenticationToken, search) {
   this.output.writeMessageBegin('createSearch', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_createSearch_args();
   args.authenticationToken = authenticationToken;
   args.search = search;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_createSearch = function() {
@@ -14241,25 +14245,19 @@ NoteStoreClient.prototype.recv_createSearch = function() {
   }
   throw 'createSearch failed: unknown result';
 };
-NoteStoreClient.prototype.updateSearch = function(authenticationToken, search, callback) {
-  if (callback === undefined) {
-    this.send_updateSearch(authenticationToken, search);
-    return this.recv_updateSearch();
-  } else {
-    var postData = this.send_updateSearch(authenticationToken, search, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_updateSearch);
-  }
+NoteStoreClient.prototype.updateSearch = function(authenticationToken, search) {
+  this.send_updateSearch(authenticationToken, search);
+  return this.recv_updateSearch();
 };
 
-NoteStoreClient.prototype.send_updateSearch = function(authenticationToken, search, callback) {
+NoteStoreClient.prototype.send_updateSearch = function(authenticationToken, search) {
   this.output.writeMessageBegin('updateSearch', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_updateSearch_args();
   args.authenticationToken = authenticationToken;
   args.search = search;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_updateSearch = function() {
@@ -14291,25 +14289,19 @@ NoteStoreClient.prototype.recv_updateSearch = function() {
   }
   throw 'updateSearch failed: unknown result';
 };
-NoteStoreClient.prototype.expungeSearch = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_expungeSearch(authenticationToken, guid);
-    return this.recv_expungeSearch();
-  } else {
-    var postData = this.send_expungeSearch(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_expungeSearch);
-  }
+NoteStoreClient.prototype.expungeSearch = function(authenticationToken, guid) {
+  this.send_expungeSearch(authenticationToken, guid);
+  return this.recv_expungeSearch();
 };
 
-NoteStoreClient.prototype.send_expungeSearch = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_expungeSearch = function(authenticationToken, guid) {
   this.output.writeMessageBegin('expungeSearch', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_expungeSearch_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_expungeSearch = function() {
@@ -14341,18 +14333,12 @@ NoteStoreClient.prototype.recv_expungeSearch = function() {
   }
   throw 'expungeSearch failed: unknown result';
 };
-NoteStoreClient.prototype.findNotes = function(authenticationToken, filter, offset, maxNotes, callback) {
-  if (callback === undefined) {
-    this.send_findNotes(authenticationToken, filter, offset, maxNotes);
-    return this.recv_findNotes();
-  } else {
-    var postData = this.send_findNotes(authenticationToken, filter, offset, maxNotes, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_findNotes);
-  }
+NoteStoreClient.prototype.findNotes = function(authenticationToken, filter, offset, maxNotes) {
+  this.send_findNotes(authenticationToken, filter, offset, maxNotes);
+  return this.recv_findNotes();
 };
 
-NoteStoreClient.prototype.send_findNotes = function(authenticationToken, filter, offset, maxNotes, callback) {
+NoteStoreClient.prototype.send_findNotes = function(authenticationToken, filter, offset, maxNotes) {
   this.output.writeMessageBegin('findNotes', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_findNotes_args();
   args.authenticationToken = authenticationToken;
@@ -14361,7 +14347,7 @@ NoteStoreClient.prototype.send_findNotes = function(authenticationToken, filter,
   args.maxNotes = maxNotes;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_findNotes = function() {
@@ -14393,18 +14379,12 @@ NoteStoreClient.prototype.recv_findNotes = function() {
   }
   throw 'findNotes failed: unknown result';
 };
-NoteStoreClient.prototype.findNoteOffset = function(authenticationToken, filter, guid, callback) {
-  if (callback === undefined) {
-    this.send_findNoteOffset(authenticationToken, filter, guid);
-    return this.recv_findNoteOffset();
-  } else {
-    var postData = this.send_findNoteOffset(authenticationToken, filter, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_findNoteOffset);
-  }
+NoteStoreClient.prototype.findNoteOffset = function(authenticationToken, filter, guid) {
+  this.send_findNoteOffset(authenticationToken, filter, guid);
+  return this.recv_findNoteOffset();
 };
 
-NoteStoreClient.prototype.send_findNoteOffset = function(authenticationToken, filter, guid, callback) {
+NoteStoreClient.prototype.send_findNoteOffset = function(authenticationToken, filter, guid) {
   this.output.writeMessageBegin('findNoteOffset', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_findNoteOffset_args();
   args.authenticationToken = authenticationToken;
@@ -14412,7 +14392,7 @@ NoteStoreClient.prototype.send_findNoteOffset = function(authenticationToken, fi
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_findNoteOffset = function() {
@@ -14444,18 +14424,12 @@ NoteStoreClient.prototype.recv_findNoteOffset = function() {
   }
   throw 'findNoteOffset failed: unknown result';
 };
-NoteStoreClient.prototype.findNotesMetadata = function(authenticationToken, filter, offset, maxNotes, resultSpec, callback) {
-  if (callback === undefined) {
-    this.send_findNotesMetadata(authenticationToken, filter, offset, maxNotes, resultSpec);
-    return this.recv_findNotesMetadata();
-  } else {
-    var postData = this.send_findNotesMetadata(authenticationToken, filter, offset, maxNotes, resultSpec, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_findNotesMetadata);
-  }
+NoteStoreClient.prototype.findNotesMetadata = function(authenticationToken, filter, offset, maxNotes, resultSpec) {
+  this.send_findNotesMetadata(authenticationToken, filter, offset, maxNotes, resultSpec);
+  return this.recv_findNotesMetadata();
 };
 
-NoteStoreClient.prototype.send_findNotesMetadata = function(authenticationToken, filter, offset, maxNotes, resultSpec, callback) {
+NoteStoreClient.prototype.send_findNotesMetadata = function(authenticationToken, filter, offset, maxNotes, resultSpec) {
   this.output.writeMessageBegin('findNotesMetadata', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_findNotesMetadata_args();
   args.authenticationToken = authenticationToken;
@@ -14465,7 +14439,7 @@ NoteStoreClient.prototype.send_findNotesMetadata = function(authenticationToken,
   args.resultSpec = resultSpec;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_findNotesMetadata = function() {
@@ -14497,18 +14471,12 @@ NoteStoreClient.prototype.recv_findNotesMetadata = function() {
   }
   throw 'findNotesMetadata failed: unknown result';
 };
-NoteStoreClient.prototype.findNoteCounts = function(authenticationToken, filter, withTrash, callback) {
-  if (callback === undefined) {
-    this.send_findNoteCounts(authenticationToken, filter, withTrash);
-    return this.recv_findNoteCounts();
-  } else {
-    var postData = this.send_findNoteCounts(authenticationToken, filter, withTrash, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_findNoteCounts);
-  }
+NoteStoreClient.prototype.findNoteCounts = function(authenticationToken, filter, withTrash) {
+  this.send_findNoteCounts(authenticationToken, filter, withTrash);
+  return this.recv_findNoteCounts();
 };
 
-NoteStoreClient.prototype.send_findNoteCounts = function(authenticationToken, filter, withTrash, callback) {
+NoteStoreClient.prototype.send_findNoteCounts = function(authenticationToken, filter, withTrash) {
   this.output.writeMessageBegin('findNoteCounts', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_findNoteCounts_args();
   args.authenticationToken = authenticationToken;
@@ -14516,7 +14484,7 @@ NoteStoreClient.prototype.send_findNoteCounts = function(authenticationToken, fi
   args.withTrash = withTrash;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_findNoteCounts = function() {
@@ -14548,18 +14516,12 @@ NoteStoreClient.prototype.recv_findNoteCounts = function() {
   }
   throw 'findNoteCounts failed: unknown result';
 };
-NoteStoreClient.prototype.getNote = function(authenticationToken, guid, withContent, withResourcesData, withResourcesRecognition, withResourcesAlternateData, callback) {
-  if (callback === undefined) {
-    this.send_getNote(authenticationToken, guid, withContent, withResourcesData, withResourcesRecognition, withResourcesAlternateData);
-    return this.recv_getNote();
-  } else {
-    var postData = this.send_getNote(authenticationToken, guid, withContent, withResourcesData, withResourcesRecognition, withResourcesAlternateData, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNote);
-  }
+NoteStoreClient.prototype.getNote = function(authenticationToken, guid, withContent, withResourcesData, withResourcesRecognition, withResourcesAlternateData) {
+  this.send_getNote(authenticationToken, guid, withContent, withResourcesData, withResourcesRecognition, withResourcesAlternateData);
+  return this.recv_getNote();
 };
 
-NoteStoreClient.prototype.send_getNote = function(authenticationToken, guid, withContent, withResourcesData, withResourcesRecognition, withResourcesAlternateData, callback) {
+NoteStoreClient.prototype.send_getNote = function(authenticationToken, guid, withContent, withResourcesData, withResourcesRecognition, withResourcesAlternateData) {
   this.output.writeMessageBegin('getNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getNote_args();
   args.authenticationToken = authenticationToken;
@@ -14570,7 +14532,7 @@ NoteStoreClient.prototype.send_getNote = function(authenticationToken, guid, wit
   args.withResourcesAlternateData = withResourcesAlternateData;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getNote = function() {
@@ -14602,25 +14564,19 @@ NoteStoreClient.prototype.recv_getNote = function() {
   }
   throw 'getNote failed: unknown result';
 };
-NoteStoreClient.prototype.getNoteApplicationData = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getNoteApplicationData(authenticationToken, guid);
-    return this.recv_getNoteApplicationData();
-  } else {
-    var postData = this.send_getNoteApplicationData(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNoteApplicationData);
-  }
+NoteStoreClient.prototype.getNoteApplicationData = function(authenticationToken, guid) {
+  this.send_getNoteApplicationData(authenticationToken, guid);
+  return this.recv_getNoteApplicationData();
 };
 
-NoteStoreClient.prototype.send_getNoteApplicationData = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getNoteApplicationData = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getNoteApplicationData', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getNoteApplicationData_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getNoteApplicationData = function() {
@@ -14652,18 +14608,12 @@ NoteStoreClient.prototype.recv_getNoteApplicationData = function() {
   }
   throw 'getNoteApplicationData failed: unknown result';
 };
-NoteStoreClient.prototype.getNoteApplicationDataEntry = function(authenticationToken, guid, key, callback) {
-  if (callback === undefined) {
-    this.send_getNoteApplicationDataEntry(authenticationToken, guid, key);
-    return this.recv_getNoteApplicationDataEntry();
-  } else {
-    var postData = this.send_getNoteApplicationDataEntry(authenticationToken, guid, key, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNoteApplicationDataEntry);
-  }
+NoteStoreClient.prototype.getNoteApplicationDataEntry = function(authenticationToken, guid, key) {
+  this.send_getNoteApplicationDataEntry(authenticationToken, guid, key);
+  return this.recv_getNoteApplicationDataEntry();
 };
 
-NoteStoreClient.prototype.send_getNoteApplicationDataEntry = function(authenticationToken, guid, key, callback) {
+NoteStoreClient.prototype.send_getNoteApplicationDataEntry = function(authenticationToken, guid, key) {
   this.output.writeMessageBegin('getNoteApplicationDataEntry', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getNoteApplicationDataEntry_args();
   args.authenticationToken = authenticationToken;
@@ -14671,7 +14621,7 @@ NoteStoreClient.prototype.send_getNoteApplicationDataEntry = function(authentica
   args.key = key;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getNoteApplicationDataEntry = function() {
@@ -14703,18 +14653,12 @@ NoteStoreClient.prototype.recv_getNoteApplicationDataEntry = function() {
   }
   throw 'getNoteApplicationDataEntry failed: unknown result';
 };
-NoteStoreClient.prototype.setNoteApplicationDataEntry = function(authenticationToken, guid, key, value, callback) {
-  if (callback === undefined) {
-    this.send_setNoteApplicationDataEntry(authenticationToken, guid, key, value);
-    return this.recv_setNoteApplicationDataEntry();
-  } else {
-    var postData = this.send_setNoteApplicationDataEntry(authenticationToken, guid, key, value, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_setNoteApplicationDataEntry);
-  }
+NoteStoreClient.prototype.setNoteApplicationDataEntry = function(authenticationToken, guid, key, value) {
+  this.send_setNoteApplicationDataEntry(authenticationToken, guid, key, value);
+  return this.recv_setNoteApplicationDataEntry();
 };
 
-NoteStoreClient.prototype.send_setNoteApplicationDataEntry = function(authenticationToken, guid, key, value, callback) {
+NoteStoreClient.prototype.send_setNoteApplicationDataEntry = function(authenticationToken, guid, key, value) {
   this.output.writeMessageBegin('setNoteApplicationDataEntry', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_setNoteApplicationDataEntry_args();
   args.authenticationToken = authenticationToken;
@@ -14723,7 +14667,7 @@ NoteStoreClient.prototype.send_setNoteApplicationDataEntry = function(authentica
   args.value = value;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_setNoteApplicationDataEntry = function() {
@@ -14755,18 +14699,12 @@ NoteStoreClient.prototype.recv_setNoteApplicationDataEntry = function() {
   }
   throw 'setNoteApplicationDataEntry failed: unknown result';
 };
-NoteStoreClient.prototype.unsetNoteApplicationDataEntry = function(authenticationToken, guid, key, callback) {
-  if (callback === undefined) {
-    this.send_unsetNoteApplicationDataEntry(authenticationToken, guid, key);
-    return this.recv_unsetNoteApplicationDataEntry();
-  } else {
-    var postData = this.send_unsetNoteApplicationDataEntry(authenticationToken, guid, key, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_unsetNoteApplicationDataEntry);
-  }
+NoteStoreClient.prototype.unsetNoteApplicationDataEntry = function(authenticationToken, guid, key) {
+  this.send_unsetNoteApplicationDataEntry(authenticationToken, guid, key);
+  return this.recv_unsetNoteApplicationDataEntry();
 };
 
-NoteStoreClient.prototype.send_unsetNoteApplicationDataEntry = function(authenticationToken, guid, key, callback) {
+NoteStoreClient.prototype.send_unsetNoteApplicationDataEntry = function(authenticationToken, guid, key) {
   this.output.writeMessageBegin('unsetNoteApplicationDataEntry', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_unsetNoteApplicationDataEntry_args();
   args.authenticationToken = authenticationToken;
@@ -14774,7 +14712,7 @@ NoteStoreClient.prototype.send_unsetNoteApplicationDataEntry = function(authenti
   args.key = key;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_unsetNoteApplicationDataEntry = function() {
@@ -14806,25 +14744,19 @@ NoteStoreClient.prototype.recv_unsetNoteApplicationDataEntry = function() {
   }
   throw 'unsetNoteApplicationDataEntry failed: unknown result';
 };
-NoteStoreClient.prototype.getNoteContent = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getNoteContent(authenticationToken, guid);
-    return this.recv_getNoteContent();
-  } else {
-    var postData = this.send_getNoteContent(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNoteContent);
-  }
+NoteStoreClient.prototype.getNoteContent = function(authenticationToken, guid) {
+  this.send_getNoteContent(authenticationToken, guid);
+  return this.recv_getNoteContent();
 };
 
-NoteStoreClient.prototype.send_getNoteContent = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getNoteContent = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getNoteContent', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getNoteContent_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getNoteContent = function() {
@@ -14856,18 +14788,12 @@ NoteStoreClient.prototype.recv_getNoteContent = function() {
   }
   throw 'getNoteContent failed: unknown result';
 };
-NoteStoreClient.prototype.getNoteSearchText = function(authenticationToken, guid, noteOnly, tokenizeForIndexing, callback) {
-  if (callback === undefined) {
-    this.send_getNoteSearchText(authenticationToken, guid, noteOnly, tokenizeForIndexing);
-    return this.recv_getNoteSearchText();
-  } else {
-    var postData = this.send_getNoteSearchText(authenticationToken, guid, noteOnly, tokenizeForIndexing, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNoteSearchText);
-  }
+NoteStoreClient.prototype.getNoteSearchText = function(authenticationToken, guid, noteOnly, tokenizeForIndexing) {
+  this.send_getNoteSearchText(authenticationToken, guid, noteOnly, tokenizeForIndexing);
+  return this.recv_getNoteSearchText();
 };
 
-NoteStoreClient.prototype.send_getNoteSearchText = function(authenticationToken, guid, noteOnly, tokenizeForIndexing, callback) {
+NoteStoreClient.prototype.send_getNoteSearchText = function(authenticationToken, guid, noteOnly, tokenizeForIndexing) {
   this.output.writeMessageBegin('getNoteSearchText', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getNoteSearchText_args();
   args.authenticationToken = authenticationToken;
@@ -14876,7 +14802,7 @@ NoteStoreClient.prototype.send_getNoteSearchText = function(authenticationToken,
   args.tokenizeForIndexing = tokenizeForIndexing;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getNoteSearchText = function() {
@@ -14908,25 +14834,19 @@ NoteStoreClient.prototype.recv_getNoteSearchText = function() {
   }
   throw 'getNoteSearchText failed: unknown result';
 };
-NoteStoreClient.prototype.getResourceSearchText = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getResourceSearchText(authenticationToken, guid);
-    return this.recv_getResourceSearchText();
-  } else {
-    var postData = this.send_getResourceSearchText(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResourceSearchText);
-  }
+NoteStoreClient.prototype.getResourceSearchText = function(authenticationToken, guid) {
+  this.send_getResourceSearchText(authenticationToken, guid);
+  return this.recv_getResourceSearchText();
 };
 
-NoteStoreClient.prototype.send_getResourceSearchText = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getResourceSearchText = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getResourceSearchText', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResourceSearchText_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResourceSearchText = function() {
@@ -14958,25 +14878,19 @@ NoteStoreClient.prototype.recv_getResourceSearchText = function() {
   }
   throw 'getResourceSearchText failed: unknown result';
 };
-NoteStoreClient.prototype.getNoteTagNames = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getNoteTagNames(authenticationToken, guid);
-    return this.recv_getNoteTagNames();
-  } else {
-    var postData = this.send_getNoteTagNames(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNoteTagNames);
-  }
+NoteStoreClient.prototype.getNoteTagNames = function(authenticationToken, guid) {
+  this.send_getNoteTagNames(authenticationToken, guid);
+  return this.recv_getNoteTagNames();
 };
 
-NoteStoreClient.prototype.send_getNoteTagNames = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getNoteTagNames = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getNoteTagNames', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getNoteTagNames_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getNoteTagNames = function() {
@@ -15008,25 +14922,19 @@ NoteStoreClient.prototype.recv_getNoteTagNames = function() {
   }
   throw 'getNoteTagNames failed: unknown result';
 };
-NoteStoreClient.prototype.createNote = function(authenticationToken, note, callback) {
-  if (callback === undefined) {
-    this.send_createNote(authenticationToken, note);
-    return this.recv_createNote();
-  } else {
-    var postData = this.send_createNote(authenticationToken, note, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_createNote);
-  }
+NoteStoreClient.prototype.createNote = function(authenticationToken, note) {
+  this.send_createNote(authenticationToken, note);
+  return this.recv_createNote();
 };
 
-NoteStoreClient.prototype.send_createNote = function(authenticationToken, note, callback) {
+NoteStoreClient.prototype.send_createNote = function(authenticationToken, note) {
   this.output.writeMessageBegin('createNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_createNote_args();
   args.authenticationToken = authenticationToken;
   args.note = note;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_createNote = function() {
@@ -15058,25 +14966,19 @@ NoteStoreClient.prototype.recv_createNote = function() {
   }
   throw 'createNote failed: unknown result';
 };
-NoteStoreClient.prototype.updateNote = function(authenticationToken, note, callback) {
-  if (callback === undefined) {
-    this.send_updateNote(authenticationToken, note);
-    return this.recv_updateNote();
-  } else {
-    var postData = this.send_updateNote(authenticationToken, note, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_updateNote);
-  }
+NoteStoreClient.prototype.updateNote = function(authenticationToken, note) {
+  this.send_updateNote(authenticationToken, note);
+  return this.recv_updateNote();
 };
 
-NoteStoreClient.prototype.send_updateNote = function(authenticationToken, note, callback) {
+NoteStoreClient.prototype.send_updateNote = function(authenticationToken, note) {
   this.output.writeMessageBegin('updateNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_updateNote_args();
   args.authenticationToken = authenticationToken;
   args.note = note;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_updateNote = function() {
@@ -15108,25 +15010,19 @@ NoteStoreClient.prototype.recv_updateNote = function() {
   }
   throw 'updateNote failed: unknown result';
 };
-NoteStoreClient.prototype.deleteNote = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_deleteNote(authenticationToken, guid);
-    return this.recv_deleteNote();
-  } else {
-    var postData = this.send_deleteNote(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_deleteNote);
-  }
+NoteStoreClient.prototype.deleteNote = function(authenticationToken, guid) {
+  this.send_deleteNote(authenticationToken, guid);
+  return this.recv_deleteNote();
 };
 
-NoteStoreClient.prototype.send_deleteNote = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_deleteNote = function(authenticationToken, guid) {
   this.output.writeMessageBegin('deleteNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_deleteNote_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_deleteNote = function() {
@@ -15158,25 +15054,19 @@ NoteStoreClient.prototype.recv_deleteNote = function() {
   }
   throw 'deleteNote failed: unknown result';
 };
-NoteStoreClient.prototype.expungeNote = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_expungeNote(authenticationToken, guid);
-    return this.recv_expungeNote();
-  } else {
-    var postData = this.send_expungeNote(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_expungeNote);
-  }
+NoteStoreClient.prototype.expungeNote = function(authenticationToken, guid) {
+  this.send_expungeNote(authenticationToken, guid);
+  return this.recv_expungeNote();
 };
 
-NoteStoreClient.prototype.send_expungeNote = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_expungeNote = function(authenticationToken, guid) {
   this.output.writeMessageBegin('expungeNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_expungeNote_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_expungeNote = function() {
@@ -15208,25 +15098,19 @@ NoteStoreClient.prototype.recv_expungeNote = function() {
   }
   throw 'expungeNote failed: unknown result';
 };
-NoteStoreClient.prototype.expungeNotes = function(authenticationToken, noteGuids, callback) {
-  if (callback === undefined) {
-    this.send_expungeNotes(authenticationToken, noteGuids);
-    return this.recv_expungeNotes();
-  } else {
-    var postData = this.send_expungeNotes(authenticationToken, noteGuids, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_expungeNotes);
-  }
+NoteStoreClient.prototype.expungeNotes = function(authenticationToken, noteGuids) {
+  this.send_expungeNotes(authenticationToken, noteGuids);
+  return this.recv_expungeNotes();
 };
 
-NoteStoreClient.prototype.send_expungeNotes = function(authenticationToken, noteGuids, callback) {
+NoteStoreClient.prototype.send_expungeNotes = function(authenticationToken, noteGuids) {
   this.output.writeMessageBegin('expungeNotes', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_expungeNotes_args();
   args.authenticationToken = authenticationToken;
   args.noteGuids = noteGuids;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_expungeNotes = function() {
@@ -15258,24 +15142,18 @@ NoteStoreClient.prototype.recv_expungeNotes = function() {
   }
   throw 'expungeNotes failed: unknown result';
 };
-NoteStoreClient.prototype.expungeInactiveNotes = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_expungeInactiveNotes(authenticationToken);
-    return this.recv_expungeInactiveNotes();
-  } else {
-    var postData = this.send_expungeInactiveNotes(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_expungeInactiveNotes);
-  }
+NoteStoreClient.prototype.expungeInactiveNotes = function(authenticationToken) {
+  this.send_expungeInactiveNotes(authenticationToken);
+  return this.recv_expungeInactiveNotes();
 };
 
-NoteStoreClient.prototype.send_expungeInactiveNotes = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_expungeInactiveNotes = function(authenticationToken) {
   this.output.writeMessageBegin('expungeInactiveNotes', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_expungeInactiveNotes_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_expungeInactiveNotes = function() {
@@ -15304,18 +15182,12 @@ NoteStoreClient.prototype.recv_expungeInactiveNotes = function() {
   }
   throw 'expungeInactiveNotes failed: unknown result';
 };
-NoteStoreClient.prototype.copyNote = function(authenticationToken, noteGuid, toNotebookGuid, callback) {
-  if (callback === undefined) {
-    this.send_copyNote(authenticationToken, noteGuid, toNotebookGuid);
-    return this.recv_copyNote();
-  } else {
-    var postData = this.send_copyNote(authenticationToken, noteGuid, toNotebookGuid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_copyNote);
-  }
+NoteStoreClient.prototype.copyNote = function(authenticationToken, noteGuid, toNotebookGuid) {
+  this.send_copyNote(authenticationToken, noteGuid, toNotebookGuid);
+  return this.recv_copyNote();
 };
 
-NoteStoreClient.prototype.send_copyNote = function(authenticationToken, noteGuid, toNotebookGuid, callback) {
+NoteStoreClient.prototype.send_copyNote = function(authenticationToken, noteGuid, toNotebookGuid) {
   this.output.writeMessageBegin('copyNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_copyNote_args();
   args.authenticationToken = authenticationToken;
@@ -15323,7 +15195,7 @@ NoteStoreClient.prototype.send_copyNote = function(authenticationToken, noteGuid
   args.toNotebookGuid = toNotebookGuid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_copyNote = function() {
@@ -15355,25 +15227,19 @@ NoteStoreClient.prototype.recv_copyNote = function() {
   }
   throw 'copyNote failed: unknown result';
 };
-NoteStoreClient.prototype.listNoteVersions = function(authenticationToken, noteGuid, callback) {
-  if (callback === undefined) {
-    this.send_listNoteVersions(authenticationToken, noteGuid);
-    return this.recv_listNoteVersions();
-  } else {
-    var postData = this.send_listNoteVersions(authenticationToken, noteGuid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_listNoteVersions);
-  }
+NoteStoreClient.prototype.listNoteVersions = function(authenticationToken, noteGuid) {
+  this.send_listNoteVersions(authenticationToken, noteGuid);
+  return this.recv_listNoteVersions();
 };
 
-NoteStoreClient.prototype.send_listNoteVersions = function(authenticationToken, noteGuid, callback) {
+NoteStoreClient.prototype.send_listNoteVersions = function(authenticationToken, noteGuid) {
   this.output.writeMessageBegin('listNoteVersions', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_listNoteVersions_args();
   args.authenticationToken = authenticationToken;
   args.noteGuid = noteGuid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_listNoteVersions = function() {
@@ -15405,18 +15271,12 @@ NoteStoreClient.prototype.recv_listNoteVersions = function() {
   }
   throw 'listNoteVersions failed: unknown result';
 };
-NoteStoreClient.prototype.getNoteVersion = function(authenticationToken, noteGuid, updateSequenceNum, withResourcesData, withResourcesRecognition, withResourcesAlternateData, callback) {
-  if (callback === undefined) {
-    this.send_getNoteVersion(authenticationToken, noteGuid, updateSequenceNum, withResourcesData, withResourcesRecognition, withResourcesAlternateData);
-    return this.recv_getNoteVersion();
-  } else {
-    var postData = this.send_getNoteVersion(authenticationToken, noteGuid, updateSequenceNum, withResourcesData, withResourcesRecognition, withResourcesAlternateData, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getNoteVersion);
-  }
+NoteStoreClient.prototype.getNoteVersion = function(authenticationToken, noteGuid, updateSequenceNum, withResourcesData, withResourcesRecognition, withResourcesAlternateData) {
+  this.send_getNoteVersion(authenticationToken, noteGuid, updateSequenceNum, withResourcesData, withResourcesRecognition, withResourcesAlternateData);
+  return this.recv_getNoteVersion();
 };
 
-NoteStoreClient.prototype.send_getNoteVersion = function(authenticationToken, noteGuid, updateSequenceNum, withResourcesData, withResourcesRecognition, withResourcesAlternateData, callback) {
+NoteStoreClient.prototype.send_getNoteVersion = function(authenticationToken, noteGuid, updateSequenceNum, withResourcesData, withResourcesRecognition, withResourcesAlternateData) {
   this.output.writeMessageBegin('getNoteVersion', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getNoteVersion_args();
   args.authenticationToken = authenticationToken;
@@ -15427,7 +15287,7 @@ NoteStoreClient.prototype.send_getNoteVersion = function(authenticationToken, no
   args.withResourcesAlternateData = withResourcesAlternateData;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getNoteVersion = function() {
@@ -15459,18 +15319,12 @@ NoteStoreClient.prototype.recv_getNoteVersion = function() {
   }
   throw 'getNoteVersion failed: unknown result';
 };
-NoteStoreClient.prototype.getResource = function(authenticationToken, guid, withData, withRecognition, withAttributes, withAlternateData, callback) {
-  if (callback === undefined) {
-    this.send_getResource(authenticationToken, guid, withData, withRecognition, withAttributes, withAlternateData);
-    return this.recv_getResource();
-  } else {
-    var postData = this.send_getResource(authenticationToken, guid, withData, withRecognition, withAttributes, withAlternateData, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResource);
-  }
+NoteStoreClient.prototype.getResource = function(authenticationToken, guid, withData, withRecognition, withAttributes, withAlternateData) {
+  this.send_getResource(authenticationToken, guid, withData, withRecognition, withAttributes, withAlternateData);
+  return this.recv_getResource();
 };
 
-NoteStoreClient.prototype.send_getResource = function(authenticationToken, guid, withData, withRecognition, withAttributes, withAlternateData, callback) {
+NoteStoreClient.prototype.send_getResource = function(authenticationToken, guid, withData, withRecognition, withAttributes, withAlternateData) {
   this.output.writeMessageBegin('getResource', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResource_args();
   args.authenticationToken = authenticationToken;
@@ -15481,7 +15335,7 @@ NoteStoreClient.prototype.send_getResource = function(authenticationToken, guid,
   args.withAlternateData = withAlternateData;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResource = function() {
@@ -15513,25 +15367,19 @@ NoteStoreClient.prototype.recv_getResource = function() {
   }
   throw 'getResource failed: unknown result';
 };
-NoteStoreClient.prototype.getResourceApplicationData = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getResourceApplicationData(authenticationToken, guid);
-    return this.recv_getResourceApplicationData();
-  } else {
-    var postData = this.send_getResourceApplicationData(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResourceApplicationData);
-  }
+NoteStoreClient.prototype.getResourceApplicationData = function(authenticationToken, guid) {
+  this.send_getResourceApplicationData(authenticationToken, guid);
+  return this.recv_getResourceApplicationData();
 };
 
-NoteStoreClient.prototype.send_getResourceApplicationData = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getResourceApplicationData = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getResourceApplicationData', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResourceApplicationData_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResourceApplicationData = function() {
@@ -15563,18 +15411,12 @@ NoteStoreClient.prototype.recv_getResourceApplicationData = function() {
   }
   throw 'getResourceApplicationData failed: unknown result';
 };
-NoteStoreClient.prototype.getResourceApplicationDataEntry = function(authenticationToken, guid, key, callback) {
-  if (callback === undefined) {
-    this.send_getResourceApplicationDataEntry(authenticationToken, guid, key);
-    return this.recv_getResourceApplicationDataEntry();
-  } else {
-    var postData = this.send_getResourceApplicationDataEntry(authenticationToken, guid, key, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResourceApplicationDataEntry);
-  }
+NoteStoreClient.prototype.getResourceApplicationDataEntry = function(authenticationToken, guid, key) {
+  this.send_getResourceApplicationDataEntry(authenticationToken, guid, key);
+  return this.recv_getResourceApplicationDataEntry();
 };
 
-NoteStoreClient.prototype.send_getResourceApplicationDataEntry = function(authenticationToken, guid, key, callback) {
+NoteStoreClient.prototype.send_getResourceApplicationDataEntry = function(authenticationToken, guid, key) {
   this.output.writeMessageBegin('getResourceApplicationDataEntry', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResourceApplicationDataEntry_args();
   args.authenticationToken = authenticationToken;
@@ -15582,7 +15424,7 @@ NoteStoreClient.prototype.send_getResourceApplicationDataEntry = function(authen
   args.key = key;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResourceApplicationDataEntry = function() {
@@ -15614,18 +15456,12 @@ NoteStoreClient.prototype.recv_getResourceApplicationDataEntry = function() {
   }
   throw 'getResourceApplicationDataEntry failed: unknown result';
 };
-NoteStoreClient.prototype.setResourceApplicationDataEntry = function(authenticationToken, guid, key, value, callback) {
-  if (callback === undefined) {
-    this.send_setResourceApplicationDataEntry(authenticationToken, guid, key, value);
-    return this.recv_setResourceApplicationDataEntry();
-  } else {
-    var postData = this.send_setResourceApplicationDataEntry(authenticationToken, guid, key, value, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_setResourceApplicationDataEntry);
-  }
+NoteStoreClient.prototype.setResourceApplicationDataEntry = function(authenticationToken, guid, key, value) {
+  this.send_setResourceApplicationDataEntry(authenticationToken, guid, key, value);
+  return this.recv_setResourceApplicationDataEntry();
 };
 
-NoteStoreClient.prototype.send_setResourceApplicationDataEntry = function(authenticationToken, guid, key, value, callback) {
+NoteStoreClient.prototype.send_setResourceApplicationDataEntry = function(authenticationToken, guid, key, value) {
   this.output.writeMessageBegin('setResourceApplicationDataEntry', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_setResourceApplicationDataEntry_args();
   args.authenticationToken = authenticationToken;
@@ -15634,7 +15470,7 @@ NoteStoreClient.prototype.send_setResourceApplicationDataEntry = function(authen
   args.value = value;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_setResourceApplicationDataEntry = function() {
@@ -15666,18 +15502,12 @@ NoteStoreClient.prototype.recv_setResourceApplicationDataEntry = function() {
   }
   throw 'setResourceApplicationDataEntry failed: unknown result';
 };
-NoteStoreClient.prototype.unsetResourceApplicationDataEntry = function(authenticationToken, guid, key, callback) {
-  if (callback === undefined) {
-    this.send_unsetResourceApplicationDataEntry(authenticationToken, guid, key);
-    return this.recv_unsetResourceApplicationDataEntry();
-  } else {
-    var postData = this.send_unsetResourceApplicationDataEntry(authenticationToken, guid, key, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_unsetResourceApplicationDataEntry);
-  }
+NoteStoreClient.prototype.unsetResourceApplicationDataEntry = function(authenticationToken, guid, key) {
+  this.send_unsetResourceApplicationDataEntry(authenticationToken, guid, key);
+  return this.recv_unsetResourceApplicationDataEntry();
 };
 
-NoteStoreClient.prototype.send_unsetResourceApplicationDataEntry = function(authenticationToken, guid, key, callback) {
+NoteStoreClient.prototype.send_unsetResourceApplicationDataEntry = function(authenticationToken, guid, key) {
   this.output.writeMessageBegin('unsetResourceApplicationDataEntry', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_unsetResourceApplicationDataEntry_args();
   args.authenticationToken = authenticationToken;
@@ -15685,7 +15515,7 @@ NoteStoreClient.prototype.send_unsetResourceApplicationDataEntry = function(auth
   args.key = key;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_unsetResourceApplicationDataEntry = function() {
@@ -15717,25 +15547,19 @@ NoteStoreClient.prototype.recv_unsetResourceApplicationDataEntry = function() {
   }
   throw 'unsetResourceApplicationDataEntry failed: unknown result';
 };
-NoteStoreClient.prototype.updateResource = function(authenticationToken, resource, callback) {
-  if (callback === undefined) {
-    this.send_updateResource(authenticationToken, resource);
-    return this.recv_updateResource();
-  } else {
-    var postData = this.send_updateResource(authenticationToken, resource, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_updateResource);
-  }
+NoteStoreClient.prototype.updateResource = function(authenticationToken, resource) {
+  this.send_updateResource(authenticationToken, resource);
+  return this.recv_updateResource();
 };
 
-NoteStoreClient.prototype.send_updateResource = function(authenticationToken, resource, callback) {
+NoteStoreClient.prototype.send_updateResource = function(authenticationToken, resource) {
   this.output.writeMessageBegin('updateResource', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_updateResource_args();
   args.authenticationToken = authenticationToken;
   args.resource = resource;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_updateResource = function() {
@@ -15767,25 +15591,19 @@ NoteStoreClient.prototype.recv_updateResource = function() {
   }
   throw 'updateResource failed: unknown result';
 };
-NoteStoreClient.prototype.getResourceData = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getResourceData(authenticationToken, guid);
-    return this.recv_getResourceData();
-  } else {
-    var postData = this.send_getResourceData(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResourceData);
-  }
+NoteStoreClient.prototype.getResourceData = function(authenticationToken, guid) {
+  this.send_getResourceData(authenticationToken, guid);
+  return this.recv_getResourceData();
 };
 
-NoteStoreClient.prototype.send_getResourceData = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getResourceData = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getResourceData', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResourceData_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResourceData = function() {
@@ -15817,18 +15635,12 @@ NoteStoreClient.prototype.recv_getResourceData = function() {
   }
   throw 'getResourceData failed: unknown result';
 };
-NoteStoreClient.prototype.getResourceByHash = function(authenticationToken, noteGuid, contentHash, withData, withRecognition, withAlternateData, callback) {
-  if (callback === undefined) {
-    this.send_getResourceByHash(authenticationToken, noteGuid, contentHash, withData, withRecognition, withAlternateData);
-    return this.recv_getResourceByHash();
-  } else {
-    var postData = this.send_getResourceByHash(authenticationToken, noteGuid, contentHash, withData, withRecognition, withAlternateData, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResourceByHash);
-  }
+NoteStoreClient.prototype.getResourceByHash = function(authenticationToken, noteGuid, contentHash, withData, withRecognition, withAlternateData) {
+  this.send_getResourceByHash(authenticationToken, noteGuid, contentHash, withData, withRecognition, withAlternateData);
+  return this.recv_getResourceByHash();
 };
 
-NoteStoreClient.prototype.send_getResourceByHash = function(authenticationToken, noteGuid, contentHash, withData, withRecognition, withAlternateData, callback) {
+NoteStoreClient.prototype.send_getResourceByHash = function(authenticationToken, noteGuid, contentHash, withData, withRecognition, withAlternateData) {
   this.output.writeMessageBegin('getResourceByHash', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResourceByHash_args();
   args.authenticationToken = authenticationToken;
@@ -15839,7 +15651,7 @@ NoteStoreClient.prototype.send_getResourceByHash = function(authenticationToken,
   args.withAlternateData = withAlternateData;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResourceByHash = function() {
@@ -15871,25 +15683,19 @@ NoteStoreClient.prototype.recv_getResourceByHash = function() {
   }
   throw 'getResourceByHash failed: unknown result';
 };
-NoteStoreClient.prototype.getResourceRecognition = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getResourceRecognition(authenticationToken, guid);
-    return this.recv_getResourceRecognition();
-  } else {
-    var postData = this.send_getResourceRecognition(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResourceRecognition);
-  }
+NoteStoreClient.prototype.getResourceRecognition = function(authenticationToken, guid) {
+  this.send_getResourceRecognition(authenticationToken, guid);
+  return this.recv_getResourceRecognition();
 };
 
-NoteStoreClient.prototype.send_getResourceRecognition = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getResourceRecognition = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getResourceRecognition', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResourceRecognition_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResourceRecognition = function() {
@@ -15921,25 +15727,19 @@ NoteStoreClient.prototype.recv_getResourceRecognition = function() {
   }
   throw 'getResourceRecognition failed: unknown result';
 };
-NoteStoreClient.prototype.getResourceAlternateData = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getResourceAlternateData(authenticationToken, guid);
-    return this.recv_getResourceAlternateData();
-  } else {
-    var postData = this.send_getResourceAlternateData(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResourceAlternateData);
-  }
+NoteStoreClient.prototype.getResourceAlternateData = function(authenticationToken, guid) {
+  this.send_getResourceAlternateData(authenticationToken, guid);
+  return this.recv_getResourceAlternateData();
 };
 
-NoteStoreClient.prototype.send_getResourceAlternateData = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getResourceAlternateData = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getResourceAlternateData', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResourceAlternateData_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResourceAlternateData = function() {
@@ -15971,25 +15771,19 @@ NoteStoreClient.prototype.recv_getResourceAlternateData = function() {
   }
   throw 'getResourceAlternateData failed: unknown result';
 };
-NoteStoreClient.prototype.getResourceAttributes = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_getResourceAttributes(authenticationToken, guid);
-    return this.recv_getResourceAttributes();
-  } else {
-    var postData = this.send_getResourceAttributes(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getResourceAttributes);
-  }
+NoteStoreClient.prototype.getResourceAttributes = function(authenticationToken, guid) {
+  this.send_getResourceAttributes(authenticationToken, guid);
+  return this.recv_getResourceAttributes();
 };
 
-NoteStoreClient.prototype.send_getResourceAttributes = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_getResourceAttributes = function(authenticationToken, guid) {
   this.output.writeMessageBegin('getResourceAttributes', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getResourceAttributes_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getResourceAttributes = function() {
@@ -16021,24 +15815,18 @@ NoteStoreClient.prototype.recv_getResourceAttributes = function() {
   }
   throw 'getResourceAttributes failed: unknown result';
 };
-NoteStoreClient.prototype.getAccountSize = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_getAccountSize(authenticationToken);
-    return this.recv_getAccountSize();
-  } else {
-    var postData = this.send_getAccountSize(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getAccountSize);
-  }
+NoteStoreClient.prototype.getAccountSize = function(authenticationToken) {
+  this.send_getAccountSize(authenticationToken);
+  return this.recv_getAccountSize();
 };
 
-NoteStoreClient.prototype.send_getAccountSize = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_getAccountSize = function(authenticationToken) {
   this.output.writeMessageBegin('getAccountSize', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getAccountSize_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getAccountSize = function() {
@@ -16067,25 +15855,19 @@ NoteStoreClient.prototype.recv_getAccountSize = function() {
   }
   throw 'getAccountSize failed: unknown result';
 };
-NoteStoreClient.prototype.getAds = function(authenticationToken, adParameters, callback) {
-  if (callback === undefined) {
-    this.send_getAds(authenticationToken, adParameters);
-    return this.recv_getAds();
-  } else {
-    var postData = this.send_getAds(authenticationToken, adParameters, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getAds);
-  }
+NoteStoreClient.prototype.getAds = function(authenticationToken, adParameters) {
+  this.send_getAds(authenticationToken, adParameters);
+  return this.recv_getAds();
 };
 
-NoteStoreClient.prototype.send_getAds = function(authenticationToken, adParameters, callback) {
+NoteStoreClient.prototype.send_getAds = function(authenticationToken, adParameters) {
   this.output.writeMessageBegin('getAds', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getAds_args();
   args.authenticationToken = authenticationToken;
   args.adParameters = adParameters;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getAds = function() {
@@ -16114,25 +15896,19 @@ NoteStoreClient.prototype.recv_getAds = function() {
   }
   throw 'getAds failed: unknown result';
 };
-NoteStoreClient.prototype.getRandomAd = function(authenticationToken, adParameters, callback) {
-  if (callback === undefined) {
-    this.send_getRandomAd(authenticationToken, adParameters);
-    return this.recv_getRandomAd();
-  } else {
-    var postData = this.send_getRandomAd(authenticationToken, adParameters, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getRandomAd);
-  }
+NoteStoreClient.prototype.getRandomAd = function(authenticationToken, adParameters) {
+  this.send_getRandomAd(authenticationToken, adParameters);
+  return this.recv_getRandomAd();
 };
 
-NoteStoreClient.prototype.send_getRandomAd = function(authenticationToken, adParameters, callback) {
+NoteStoreClient.prototype.send_getRandomAd = function(authenticationToken, adParameters) {
   this.output.writeMessageBegin('getRandomAd', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getRandomAd_args();
   args.authenticationToken = authenticationToken;
   args.adParameters = adParameters;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getRandomAd = function() {
@@ -16161,25 +15937,19 @@ NoteStoreClient.prototype.recv_getRandomAd = function() {
   }
   throw 'getRandomAd failed: unknown result';
 };
-NoteStoreClient.prototype.getPublicNotebook = function(userId, publicUri, callback) {
-  if (callback === undefined) {
-    this.send_getPublicNotebook(userId, publicUri);
-    return this.recv_getPublicNotebook();
-  } else {
-    var postData = this.send_getPublicNotebook(userId, publicUri, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getPublicNotebook);
-  }
+NoteStoreClient.prototype.getPublicNotebook = function(userId, publicUri) {
+  this.send_getPublicNotebook(userId, publicUri);
+  return this.recv_getPublicNotebook();
 };
 
-NoteStoreClient.prototype.send_getPublicNotebook = function(userId, publicUri, callback) {
+NoteStoreClient.prototype.send_getPublicNotebook = function(userId, publicUri) {
   this.output.writeMessageBegin('getPublicNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getPublicNotebook_args();
   args.userId = userId;
   args.publicUri = publicUri;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getPublicNotebook = function() {
@@ -16208,25 +15978,19 @@ NoteStoreClient.prototype.recv_getPublicNotebook = function() {
   }
   throw 'getPublicNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.createSharedNotebook = function(authenticationToken, sharedNotebook, callback) {
-  if (callback === undefined) {
-    this.send_createSharedNotebook(authenticationToken, sharedNotebook);
-    return this.recv_createSharedNotebook();
-  } else {
-    var postData = this.send_createSharedNotebook(authenticationToken, sharedNotebook, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_createSharedNotebook);
-  }
+NoteStoreClient.prototype.createSharedNotebook = function(authenticationToken, sharedNotebook) {
+  this.send_createSharedNotebook(authenticationToken, sharedNotebook);
+  return this.recv_createSharedNotebook();
 };
 
-NoteStoreClient.prototype.send_createSharedNotebook = function(authenticationToken, sharedNotebook, callback) {
+NoteStoreClient.prototype.send_createSharedNotebook = function(authenticationToken, sharedNotebook) {
   this.output.writeMessageBegin('createSharedNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_createSharedNotebook_args();
   args.authenticationToken = authenticationToken;
   args.sharedNotebook = sharedNotebook;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_createSharedNotebook = function() {
@@ -16258,18 +16022,12 @@ NoteStoreClient.prototype.recv_createSharedNotebook = function() {
   }
   throw 'createSharedNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.sendMessageToSharedNotebookMembers = function(authenticationToken, notebookGuid, messageText, recipients, callback) {
-  if (callback === undefined) {
-    this.send_sendMessageToSharedNotebookMembers(authenticationToken, notebookGuid, messageText, recipients);
-    return this.recv_sendMessageToSharedNotebookMembers();
-  } else {
-    var postData = this.send_sendMessageToSharedNotebookMembers(authenticationToken, notebookGuid, messageText, recipients, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_sendMessageToSharedNotebookMembers);
-  }
+NoteStoreClient.prototype.sendMessageToSharedNotebookMembers = function(authenticationToken, notebookGuid, messageText, recipients) {
+  this.send_sendMessageToSharedNotebookMembers(authenticationToken, notebookGuid, messageText, recipients);
+  return this.recv_sendMessageToSharedNotebookMembers();
 };
 
-NoteStoreClient.prototype.send_sendMessageToSharedNotebookMembers = function(authenticationToken, notebookGuid, messageText, recipients, callback) {
+NoteStoreClient.prototype.send_sendMessageToSharedNotebookMembers = function(authenticationToken, notebookGuid, messageText, recipients) {
   this.output.writeMessageBegin('sendMessageToSharedNotebookMembers', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_sendMessageToSharedNotebookMembers_args();
   args.authenticationToken = authenticationToken;
@@ -16278,7 +16036,7 @@ NoteStoreClient.prototype.send_sendMessageToSharedNotebookMembers = function(aut
   args.recipients = recipients;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_sendMessageToSharedNotebookMembers = function() {
@@ -16310,24 +16068,18 @@ NoteStoreClient.prototype.recv_sendMessageToSharedNotebookMembers = function() {
   }
   throw 'sendMessageToSharedNotebookMembers failed: unknown result';
 };
-NoteStoreClient.prototype.listSharedNotebooks = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_listSharedNotebooks(authenticationToken);
-    return this.recv_listSharedNotebooks();
-  } else {
-    var postData = this.send_listSharedNotebooks(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_listSharedNotebooks);
-  }
+NoteStoreClient.prototype.listSharedNotebooks = function(authenticationToken) {
+  this.send_listSharedNotebooks(authenticationToken);
+  return this.recv_listSharedNotebooks();
 };
 
-NoteStoreClient.prototype.send_listSharedNotebooks = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_listSharedNotebooks = function(authenticationToken) {
   this.output.writeMessageBegin('listSharedNotebooks', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_listSharedNotebooks_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_listSharedNotebooks = function() {
@@ -16359,25 +16111,19 @@ NoteStoreClient.prototype.recv_listSharedNotebooks = function() {
   }
   throw 'listSharedNotebooks failed: unknown result';
 };
-NoteStoreClient.prototype.expungeSharedNotebooks = function(authenticationToken, sharedNotebookIds, callback) {
-  if (callback === undefined) {
-    this.send_expungeSharedNotebooks(authenticationToken, sharedNotebookIds);
-    return this.recv_expungeSharedNotebooks();
-  } else {
-    var postData = this.send_expungeSharedNotebooks(authenticationToken, sharedNotebookIds, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_expungeSharedNotebooks);
-  }
+NoteStoreClient.prototype.expungeSharedNotebooks = function(authenticationToken, sharedNotebookIds) {
+  this.send_expungeSharedNotebooks(authenticationToken, sharedNotebookIds);
+  return this.recv_expungeSharedNotebooks();
 };
 
-NoteStoreClient.prototype.send_expungeSharedNotebooks = function(authenticationToken, sharedNotebookIds, callback) {
+NoteStoreClient.prototype.send_expungeSharedNotebooks = function(authenticationToken, sharedNotebookIds) {
   this.output.writeMessageBegin('expungeSharedNotebooks', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_expungeSharedNotebooks_args();
   args.authenticationToken = authenticationToken;
   args.sharedNotebookIds = sharedNotebookIds;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_expungeSharedNotebooks = function() {
@@ -16409,25 +16155,19 @@ NoteStoreClient.prototype.recv_expungeSharedNotebooks = function() {
   }
   throw 'expungeSharedNotebooks failed: unknown result';
 };
-NoteStoreClient.prototype.createLinkedNotebook = function(authenticationToken, linkedNotebook, callback) {
-  if (callback === undefined) {
-    this.send_createLinkedNotebook(authenticationToken, linkedNotebook);
-    return this.recv_createLinkedNotebook();
-  } else {
-    var postData = this.send_createLinkedNotebook(authenticationToken, linkedNotebook, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_createLinkedNotebook);
-  }
+NoteStoreClient.prototype.createLinkedNotebook = function(authenticationToken, linkedNotebook) {
+  this.send_createLinkedNotebook(authenticationToken, linkedNotebook);
+  return this.recv_createLinkedNotebook();
 };
 
-NoteStoreClient.prototype.send_createLinkedNotebook = function(authenticationToken, linkedNotebook, callback) {
+NoteStoreClient.prototype.send_createLinkedNotebook = function(authenticationToken, linkedNotebook) {
   this.output.writeMessageBegin('createLinkedNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_createLinkedNotebook_args();
   args.authenticationToken = authenticationToken;
   args.linkedNotebook = linkedNotebook;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_createLinkedNotebook = function() {
@@ -16459,25 +16199,19 @@ NoteStoreClient.prototype.recv_createLinkedNotebook = function() {
   }
   throw 'createLinkedNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.updateLinkedNotebook = function(authenticationToken, linkedNotebook, callback) {
-  if (callback === undefined) {
-    this.send_updateLinkedNotebook(authenticationToken, linkedNotebook);
-    return this.recv_updateLinkedNotebook();
-  } else {
-    var postData = this.send_updateLinkedNotebook(authenticationToken, linkedNotebook, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_updateLinkedNotebook);
-  }
+NoteStoreClient.prototype.updateLinkedNotebook = function(authenticationToken, linkedNotebook) {
+  this.send_updateLinkedNotebook(authenticationToken, linkedNotebook);
+  return this.recv_updateLinkedNotebook();
 };
 
-NoteStoreClient.prototype.send_updateLinkedNotebook = function(authenticationToken, linkedNotebook, callback) {
+NoteStoreClient.prototype.send_updateLinkedNotebook = function(authenticationToken, linkedNotebook) {
   this.output.writeMessageBegin('updateLinkedNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_updateLinkedNotebook_args();
   args.authenticationToken = authenticationToken;
   args.linkedNotebook = linkedNotebook;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_updateLinkedNotebook = function() {
@@ -16509,24 +16243,18 @@ NoteStoreClient.prototype.recv_updateLinkedNotebook = function() {
   }
   throw 'updateLinkedNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.listLinkedNotebooks = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_listLinkedNotebooks(authenticationToken);
-    return this.recv_listLinkedNotebooks();
-  } else {
-    var postData = this.send_listLinkedNotebooks(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_listLinkedNotebooks);
-  }
+NoteStoreClient.prototype.listLinkedNotebooks = function(authenticationToken) {
+  this.send_listLinkedNotebooks(authenticationToken);
+  return this.recv_listLinkedNotebooks();
 };
 
-NoteStoreClient.prototype.send_listLinkedNotebooks = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_listLinkedNotebooks = function(authenticationToken) {
   this.output.writeMessageBegin('listLinkedNotebooks', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_listLinkedNotebooks_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_listLinkedNotebooks = function() {
@@ -16558,25 +16286,19 @@ NoteStoreClient.prototype.recv_listLinkedNotebooks = function() {
   }
   throw 'listLinkedNotebooks failed: unknown result';
 };
-NoteStoreClient.prototype.expungeLinkedNotebook = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_expungeLinkedNotebook(authenticationToken, guid);
-    return this.recv_expungeLinkedNotebook();
-  } else {
-    var postData = this.send_expungeLinkedNotebook(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_expungeLinkedNotebook);
-  }
+NoteStoreClient.prototype.expungeLinkedNotebook = function(authenticationToken, guid) {
+  this.send_expungeLinkedNotebook(authenticationToken, guid);
+  return this.recv_expungeLinkedNotebook();
 };
 
-NoteStoreClient.prototype.send_expungeLinkedNotebook = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_expungeLinkedNotebook = function(authenticationToken, guid) {
   this.output.writeMessageBegin('expungeLinkedNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_expungeLinkedNotebook_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_expungeLinkedNotebook = function() {
@@ -16608,25 +16330,19 @@ NoteStoreClient.prototype.recv_expungeLinkedNotebook = function() {
   }
   throw 'expungeLinkedNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.authenticateToSharedNotebook = function(shareKey, authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_authenticateToSharedNotebook(shareKey, authenticationToken);
-    return this.recv_authenticateToSharedNotebook();
-  } else {
-    var postData = this.send_authenticateToSharedNotebook(shareKey, authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_authenticateToSharedNotebook);
-  }
+NoteStoreClient.prototype.authenticateToSharedNotebook = function(shareKey, authenticationToken) {
+  this.send_authenticateToSharedNotebook(shareKey, authenticationToken);
+  return this.recv_authenticateToSharedNotebook();
 };
 
-NoteStoreClient.prototype.send_authenticateToSharedNotebook = function(shareKey, authenticationToken, callback) {
+NoteStoreClient.prototype.send_authenticateToSharedNotebook = function(shareKey, authenticationToken) {
   this.output.writeMessageBegin('authenticateToSharedNotebook', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_authenticateToSharedNotebook_args();
   args.shareKey = shareKey;
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_authenticateToSharedNotebook = function() {
@@ -16658,24 +16374,18 @@ NoteStoreClient.prototype.recv_authenticateToSharedNotebook = function() {
   }
   throw 'authenticateToSharedNotebook failed: unknown result';
 };
-NoteStoreClient.prototype.getSharedNotebookByAuth = function(authenticationToken, callback) {
-  if (callback === undefined) {
-    this.send_getSharedNotebookByAuth(authenticationToken);
-    return this.recv_getSharedNotebookByAuth();
-  } else {
-    var postData = this.send_getSharedNotebookByAuth(authenticationToken, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_getSharedNotebookByAuth);
-  }
+NoteStoreClient.prototype.getSharedNotebookByAuth = function(authenticationToken) {
+  this.send_getSharedNotebookByAuth(authenticationToken);
+  return this.recv_getSharedNotebookByAuth();
 };
 
-NoteStoreClient.prototype.send_getSharedNotebookByAuth = function(authenticationToken, callback) {
+NoteStoreClient.prototype.send_getSharedNotebookByAuth = function(authenticationToken) {
   this.output.writeMessageBegin('getSharedNotebookByAuth', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_getSharedNotebookByAuth_args();
   args.authenticationToken = authenticationToken;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_getSharedNotebookByAuth = function() {
@@ -16707,25 +16417,19 @@ NoteStoreClient.prototype.recv_getSharedNotebookByAuth = function() {
   }
   throw 'getSharedNotebookByAuth failed: unknown result';
 };
-NoteStoreClient.prototype.emailNote = function(authenticationToken, parameters, callback) {
-  if (callback === undefined) {
-    this.send_emailNote(authenticationToken, parameters);
-    this.recv_emailNote();
-  } else {
-    var postData = this.send_emailNote(authenticationToken, parameters, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_emailNote);
-  }
+NoteStoreClient.prototype.emailNote = function(authenticationToken, parameters) {
+  this.send_emailNote(authenticationToken, parameters);
+  this.recv_emailNote();
 };
 
-NoteStoreClient.prototype.send_emailNote = function(authenticationToken, parameters, callback) {
+NoteStoreClient.prototype.send_emailNote = function(authenticationToken, parameters) {
   this.output.writeMessageBegin('emailNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_emailNote_args();
   args.authenticationToken = authenticationToken;
   args.parameters = parameters;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_emailNote = function() {
@@ -16754,25 +16458,19 @@ NoteStoreClient.prototype.recv_emailNote = function() {
   }
   return;
 };
-NoteStoreClient.prototype.shareNote = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_shareNote(authenticationToken, guid);
-    return this.recv_shareNote();
-  } else {
-    var postData = this.send_shareNote(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_shareNote);
-  }
+NoteStoreClient.prototype.shareNote = function(authenticationToken, guid) {
+  this.send_shareNote(authenticationToken, guid);
+  return this.recv_shareNote();
 };
 
-NoteStoreClient.prototype.send_shareNote = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_shareNote = function(authenticationToken, guid) {
   this.output.writeMessageBegin('shareNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_shareNote_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_shareNote = function() {
@@ -16804,25 +16502,19 @@ NoteStoreClient.prototype.recv_shareNote = function() {
   }
   throw 'shareNote failed: unknown result';
 };
-NoteStoreClient.prototype.stopSharingNote = function(authenticationToken, guid, callback) {
-  if (callback === undefined) {
-    this.send_stopSharingNote(authenticationToken, guid);
-    this.recv_stopSharingNote();
-  } else {
-    var postData = this.send_stopSharingNote(authenticationToken, guid, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_stopSharingNote);
-  }
+NoteStoreClient.prototype.stopSharingNote = function(authenticationToken, guid) {
+  this.send_stopSharingNote(authenticationToken, guid);
+  this.recv_stopSharingNote();
 };
 
-NoteStoreClient.prototype.send_stopSharingNote = function(authenticationToken, guid, callback) {
+NoteStoreClient.prototype.send_stopSharingNote = function(authenticationToken, guid) {
   this.output.writeMessageBegin('stopSharingNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_stopSharingNote_args();
   args.authenticationToken = authenticationToken;
   args.guid = guid;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_stopSharingNote = function() {
@@ -16851,25 +16543,19 @@ NoteStoreClient.prototype.recv_stopSharingNote = function() {
   }
   return;
 };
-NoteStoreClient.prototype.authenticateToSharedNote = function(guid, noteKey, callback) {
-  if (callback === undefined) {
-    this.send_authenticateToSharedNote(guid, noteKey);
-    return this.recv_authenticateToSharedNote();
-  } else {
-    var postData = this.send_authenticateToSharedNote(guid, noteKey, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_authenticateToSharedNote);
-  }
+NoteStoreClient.prototype.authenticateToSharedNote = function(guid, noteKey) {
+  this.send_authenticateToSharedNote(guid, noteKey);
+  return this.recv_authenticateToSharedNote();
 };
 
-NoteStoreClient.prototype.send_authenticateToSharedNote = function(guid, noteKey, callback) {
+NoteStoreClient.prototype.send_authenticateToSharedNote = function(guid, noteKey) {
   this.output.writeMessageBegin('authenticateToSharedNote', Thrift.MessageType.CALL, this.seqid);
   var args = new NoteStore_authenticateToSharedNote_args();
   args.guid = guid;
   args.noteKey = noteKey;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
 NoteStoreClient.prototype.recv_authenticateToSharedNote = function() {
@@ -16901,33 +16587,23 @@ NoteStoreClient.prototype.recv_authenticateToSharedNote = function() {
   }
   throw 'authenticateToSharedNote failed: unknown result';
 };
-NoteStoreClient.prototype.findRelatedNotes = function(authenticationToken, query, offset, maxNotes, fillScores, fillExplanation, fillQuery, callback) {
-  if (callback === undefined) {
-    this.send_findRelatedNotes(authenticationToken, query, offset, maxNotes, fillScores, fillExplanation, fillQuery);
-    return this.recv_findRelatedNotes();
-  } else {
-    var postData = this.send_findRelatedNotes(authenticationToken, query, offset, maxNotes, fillScores, fillExplanation, fillQuery, true);
-    return this.output.getTransport()
-      .jqRequest(this, postData, arguments, this.recv_findRelatedNotes);
-  }
+NoteStoreClient.prototype.findRelated = function(authenticationToken, query, resultSpec) {
+  this.send_findRelated(authenticationToken, query, resultSpec);
+  return this.recv_findRelated();
 };
 
-NoteStoreClient.prototype.send_findRelatedNotes = function(authenticationToken, query, offset, maxNotes, fillScores, fillExplanation, fillQuery, callback) {
-  this.output.writeMessageBegin('findRelatedNotes', Thrift.MessageType.CALL, this.seqid);
-  var args = new NoteStore_findRelatedNotes_args();
+NoteStoreClient.prototype.send_findRelated = function(authenticationToken, query, resultSpec) {
+  this.output.writeMessageBegin('findRelated', Thrift.MessageType.CALL, this.seqid);
+  var args = new NoteStore_findRelated_args();
   args.authenticationToken = authenticationToken;
   args.query = query;
-  args.offset = offset;
-  args.maxNotes = maxNotes;
-  args.fillScores = fillScores;
-  args.fillExplanation = fillExplanation;
-  args.fillQuery = fillQuery;
+  args.resultSpec = resultSpec;
   args.write(this.output);
   this.output.writeMessageEnd();
-  return this.output.getTransport().flush(callback);
+  return this.output.getTransport().flush();
 };
 
-NoteStoreClient.prototype.recv_findRelatedNotes = function() {
+NoteStoreClient.prototype.recv_findRelated = function() {
   var ret = this.input.readMessageBegin();
   var fname = ret.fname;
   var mtype = ret.mtype;
@@ -16938,21 +16614,21 @@ NoteStoreClient.prototype.recv_findRelatedNotes = function() {
     this.input.readMessageEnd();
     throw x;
   }
-  var result = new NoteStore_findRelatedNotes_result();
+  var result = new NoteStore_findRelated_result();
   result.read(this.input);
   this.input.readMessageEnd();
 
   if (null !== result.userException) {
     throw result.userException;
   }
-  if (null !== result.notFoundException) {
-    throw result.notFoundException;
-  }
   if (null !== result.systemException) {
     throw result.systemException;
+  }
+  if (null !== result.notFoundException) {
+    throw result.notFoundException;
   }
   if (null !== result.success) {
     return result.success;
   }
-  throw 'findRelatedNotes failed: unknown result';
+  throw 'findRelated failed: unknown result';
 };

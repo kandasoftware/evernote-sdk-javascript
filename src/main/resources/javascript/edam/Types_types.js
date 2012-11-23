@@ -1908,6 +1908,7 @@ NoteAttributes = function(args) {
   this.placeName = null;
   this.contentClass = null;
   this.applicationData = null;
+  this.lastEditedBy = null;
   if (args) {
     if (args.subjectDate !== undefined) {
       this.subjectDate = args.subjectDate;
@@ -1944,6 +1945,9 @@ NoteAttributes = function(args) {
     }
     if (args.applicationData !== undefined) {
       this.applicationData = args.applicationData;
+    }
+    if (args.lastEditedBy !== undefined) {
+      this.lastEditedBy = args.lastEditedBy;
     }
   }
 };
@@ -2046,6 +2050,13 @@ NoteAttributes.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 24:
+      if (ftype == Thrift.Type.STRING) {
+        this.lastEditedBy = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2115,6 +2126,11 @@ NoteAttributes.prototype.write = function(output) {
   if (this.applicationData) {
     output.writeFieldBegin('applicationData', Thrift.Type.STRUCT, 23);
     this.applicationData.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.lastEditedBy) {
+    output.writeFieldBegin('lastEditedBy', Thrift.Type.STRING, 24);
+    output.writeString(this.lastEditedBy);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -2562,223 +2578,6 @@ Publishing.prototype.write = function(output) {
   return;
 };
 
-Notebook = function(args) {
-  this.guid = null;
-  this.name = null;
-  this.updateSequenceNum = null;
-  this.defaultNotebook = null;
-  this.serviceCreated = null;
-  this.serviceUpdated = null;
-  this.publishing = null;
-  this.published = null;
-  this.stack = null;
-  this.sharedNotebookIds = null;
-  if (args) {
-    if (args.guid !== undefined) {
-      this.guid = args.guid;
-    }
-    if (args.name !== undefined) {
-      this.name = args.name;
-    }
-    if (args.updateSequenceNum !== undefined) {
-      this.updateSequenceNum = args.updateSequenceNum;
-    }
-    if (args.defaultNotebook !== undefined) {
-      this.defaultNotebook = args.defaultNotebook;
-    }
-    if (args.serviceCreated !== undefined) {
-      this.serviceCreated = args.serviceCreated;
-    }
-    if (args.serviceUpdated !== undefined) {
-      this.serviceUpdated = args.serviceUpdated;
-    }
-    if (args.publishing !== undefined) {
-      this.publishing = args.publishing;
-    }
-    if (args.published !== undefined) {
-      this.published = args.published;
-    }
-    if (args.stack !== undefined) {
-      this.stack = args.stack;
-    }
-    if (args.sharedNotebookIds !== undefined) {
-      this.sharedNotebookIds = args.sharedNotebookIds;
-    }
-  }
-};
-Notebook.prototype = {};
-Notebook.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.guid = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.name = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.I32) {
-        this.updateSequenceNum = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 6:
-      if (ftype == Thrift.Type.BOOL) {
-        this.defaultNotebook = input.readBool().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 7:
-      if (ftype == Thrift.Type.I64) {
-        this.serviceCreated = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 8:
-      if (ftype == Thrift.Type.I64) {
-        this.serviceUpdated = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 10:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.publishing = new Publishing();
-        this.publishing.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 11:
-      if (ftype == Thrift.Type.BOOL) {
-        this.published = input.readBool().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 12:
-      if (ftype == Thrift.Type.STRING) {
-        this.stack = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 13:
-      if (ftype == Thrift.Type.LIST) {
-        var _size58 = 0;
-        var _rtmp362;
-        this.sharedNotebookIds = [];
-        var _etype61 = 0;
-        _rtmp362 = input.readListBegin();
-        _etype61 = _rtmp362.etype;
-        _size58 = _rtmp362.size;
-        for (var _i63 = 0; _i63 < _size58; ++_i63)
-        {
-          var elem64 = null;
-          elem64 = input.readI64().value;
-          this.sharedNotebookIds.push(elem64);
-        }
-        input.readListEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-Notebook.prototype.write = function(output) {
-  output.writeStructBegin('Notebook');
-  if (this.guid) {
-    output.writeFieldBegin('guid', Thrift.Type.STRING, 1);
-    output.writeString(this.guid);
-    output.writeFieldEnd();
-  }
-  if (this.name) {
-    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
-    output.writeString(this.name);
-    output.writeFieldEnd();
-  }
-  if (this.updateSequenceNum) {
-    output.writeFieldBegin('updateSequenceNum', Thrift.Type.I32, 5);
-    output.writeI32(this.updateSequenceNum);
-    output.writeFieldEnd();
-  }
-  if (this.defaultNotebook) {
-    output.writeFieldBegin('defaultNotebook', Thrift.Type.BOOL, 6);
-    output.writeBool(this.defaultNotebook);
-    output.writeFieldEnd();
-  }
-  if (this.serviceCreated) {
-    output.writeFieldBegin('serviceCreated', Thrift.Type.I64, 7);
-    output.writeI64(this.serviceCreated);
-    output.writeFieldEnd();
-  }
-  if (this.serviceUpdated) {
-    output.writeFieldBegin('serviceUpdated', Thrift.Type.I64, 8);
-    output.writeI64(this.serviceUpdated);
-    output.writeFieldEnd();
-  }
-  if (this.publishing) {
-    output.writeFieldBegin('publishing', Thrift.Type.STRUCT, 10);
-    this.publishing.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.published) {
-    output.writeFieldBegin('published', Thrift.Type.BOOL, 11);
-    output.writeBool(this.published);
-    output.writeFieldEnd();
-  }
-  if (this.stack) {
-    output.writeFieldBegin('stack', Thrift.Type.STRING, 12);
-    output.writeString(this.stack);
-    output.writeFieldEnd();
-  }
-  if (this.sharedNotebookIds) {
-    output.writeFieldBegin('sharedNotebookIds', Thrift.Type.LIST, 13);
-    output.writeListBegin(Thrift.Type.I64, this.sharedNotebookIds.length);
-    for (var iter65 in this.sharedNotebookIds)
-    {
-      if (this.sharedNotebookIds.hasOwnProperty(iter65))
-      {
-        iter65 = this.sharedNotebookIds[iter65];
-        output.writeI64(iter65);
-      }
-    }
-    output.writeListEnd();
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
 SavedSearch = function(args) {
   this.guid = null;
   this.name = null;
@@ -3143,6 +2942,7 @@ SharedNotebook = function(args) {
   this.notebookModifiable = null;
   this.requireLogin = null;
   this.serviceCreated = null;
+  this.serviceUpdated = null;
   this.shareKey = null;
   this.username = null;
   if (args) {
@@ -3166,6 +2966,9 @@ SharedNotebook = function(args) {
     }
     if (args.serviceCreated !== undefined) {
       this.serviceCreated = args.serviceCreated;
+    }
+    if (args.serviceUpdated !== undefined) {
+      this.serviceUpdated = args.serviceUpdated;
     }
     if (args.shareKey !== undefined) {
       this.shareKey = args.shareKey;
@@ -3238,6 +3041,13 @@ SharedNotebook.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 10:
+      if (ftype == Thrift.Type.I64) {
+        this.serviceUpdated = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       case 8:
       if (ftype == Thrift.Type.STRING) {
         this.shareKey = input.readString().value;
@@ -3298,6 +3108,11 @@ SharedNotebook.prototype.write = function(output) {
     output.writeI64(this.serviceCreated);
     output.writeFieldEnd();
   }
+  if (this.serviceUpdated) {
+    output.writeFieldBegin('serviceUpdated', Thrift.Type.I64, 10);
+    output.writeI64(this.serviceUpdated);
+    output.writeFieldEnd();
+  }
   if (this.shareKey) {
     output.writeFieldBegin('shareKey', Thrift.Type.STRING, 8);
     output.writeString(this.shareKey);
@@ -3306,6 +3121,262 @@ SharedNotebook.prototype.write = function(output) {
   if (this.username) {
     output.writeFieldBegin('username', Thrift.Type.STRING, 9);
     output.writeString(this.username);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Notebook = function(args) {
+  this.guid = null;
+  this.name = null;
+  this.updateSequenceNum = null;
+  this.defaultNotebook = null;
+  this.serviceCreated = null;
+  this.serviceUpdated = null;
+  this.publishing = null;
+  this.published = null;
+  this.stack = null;
+  this.sharedNotebookIds = null;
+  this.sharedNotebooks = null;
+  if (args) {
+    if (args.guid !== undefined) {
+      this.guid = args.guid;
+    }
+    if (args.name !== undefined) {
+      this.name = args.name;
+    }
+    if (args.updateSequenceNum !== undefined) {
+      this.updateSequenceNum = args.updateSequenceNum;
+    }
+    if (args.defaultNotebook !== undefined) {
+      this.defaultNotebook = args.defaultNotebook;
+    }
+    if (args.serviceCreated !== undefined) {
+      this.serviceCreated = args.serviceCreated;
+    }
+    if (args.serviceUpdated !== undefined) {
+      this.serviceUpdated = args.serviceUpdated;
+    }
+    if (args.publishing !== undefined) {
+      this.publishing = args.publishing;
+    }
+    if (args.published !== undefined) {
+      this.published = args.published;
+    }
+    if (args.stack !== undefined) {
+      this.stack = args.stack;
+    }
+    if (args.sharedNotebookIds !== undefined) {
+      this.sharedNotebookIds = args.sharedNotebookIds;
+    }
+    if (args.sharedNotebooks !== undefined) {
+      this.sharedNotebooks = args.sharedNotebooks;
+    }
+  }
+};
+Notebook.prototype = {};
+Notebook.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.guid = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I32) {
+        this.updateSequenceNum = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.defaultNotebook = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I64) {
+        this.serviceCreated = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.I64) {
+        this.serviceUpdated = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.publishing = new Publishing();
+        this.publishing.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.BOOL) {
+        this.published = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 12:
+      if (ftype == Thrift.Type.STRING) {
+        this.stack = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 13:
+      if (ftype == Thrift.Type.LIST) {
+        var _size58 = 0;
+        var _rtmp362;
+        this.sharedNotebookIds = [];
+        var _etype61 = 0;
+        _rtmp362 = input.readListBegin();
+        _etype61 = _rtmp362.etype;
+        _size58 = _rtmp362.size;
+        for (var _i63 = 0; _i63 < _size58; ++_i63)
+        {
+          var elem64 = null;
+          elem64 = input.readI64().value;
+          this.sharedNotebookIds.push(elem64);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 14:
+      if (ftype == Thrift.Type.LIST) {
+        var _size65 = 0;
+        var _rtmp369;
+        this.sharedNotebooks = [];
+        var _etype68 = 0;
+        _rtmp369 = input.readListBegin();
+        _etype68 = _rtmp369.etype;
+        _size65 = _rtmp369.size;
+        for (var _i70 = 0; _i70 < _size65; ++_i70)
+        {
+          var elem71 = null;
+          elem71 = new SharedNotebook();
+          elem71.read(input);
+          this.sharedNotebooks.push(elem71);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Notebook.prototype.write = function(output) {
+  output.writeStructBegin('Notebook');
+  if (this.guid) {
+    output.writeFieldBegin('guid', Thrift.Type.STRING, 1);
+    output.writeString(this.guid);
+    output.writeFieldEnd();
+  }
+  if (this.name) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.updateSequenceNum) {
+    output.writeFieldBegin('updateSequenceNum', Thrift.Type.I32, 5);
+    output.writeI32(this.updateSequenceNum);
+    output.writeFieldEnd();
+  }
+  if (this.defaultNotebook) {
+    output.writeFieldBegin('defaultNotebook', Thrift.Type.BOOL, 6);
+    output.writeBool(this.defaultNotebook);
+    output.writeFieldEnd();
+  }
+  if (this.serviceCreated) {
+    output.writeFieldBegin('serviceCreated', Thrift.Type.I64, 7);
+    output.writeI64(this.serviceCreated);
+    output.writeFieldEnd();
+  }
+  if (this.serviceUpdated) {
+    output.writeFieldBegin('serviceUpdated', Thrift.Type.I64, 8);
+    output.writeI64(this.serviceUpdated);
+    output.writeFieldEnd();
+  }
+  if (this.publishing) {
+    output.writeFieldBegin('publishing', Thrift.Type.STRUCT, 10);
+    this.publishing.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.published) {
+    output.writeFieldBegin('published', Thrift.Type.BOOL, 11);
+    output.writeBool(this.published);
+    output.writeFieldEnd();
+  }
+  if (this.stack) {
+    output.writeFieldBegin('stack', Thrift.Type.STRING, 12);
+    output.writeString(this.stack);
+    output.writeFieldEnd();
+  }
+  if (this.sharedNotebookIds) {
+    output.writeFieldBegin('sharedNotebookIds', Thrift.Type.LIST, 13);
+    output.writeListBegin(Thrift.Type.I64, this.sharedNotebookIds.length);
+    for (var iter72 in this.sharedNotebookIds)
+    {
+      if (this.sharedNotebookIds.hasOwnProperty(iter72))
+      {
+        iter72 = this.sharedNotebookIds[iter72];
+        output.writeI64(iter72);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.sharedNotebooks) {
+    output.writeFieldBegin('sharedNotebooks', Thrift.Type.LIST, 14);
+    output.writeListBegin(Thrift.Type.STRUCT, this.sharedNotebooks.length);
+    for (var iter73 in this.sharedNotebooks)
+    {
+      if (this.sharedNotebooks.hasOwnProperty(iter73))
+      {
+        iter73 = this.sharedNotebooks[iter73];
+        iter73.write(output);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -3322,6 +3393,7 @@ LinkedNotebook = function(args) {
   this.guid = null;
   this.updateSequenceNum = null;
   this.noteStoreUrl = null;
+  this.webApiUrlPrefix = null;
   if (args) {
     if (args.shareName !== undefined) {
       this.shareName = args.shareName;
@@ -3346,6 +3418,9 @@ LinkedNotebook = function(args) {
     }
     if (args.noteStoreUrl !== undefined) {
       this.noteStoreUrl = args.noteStoreUrl;
+    }
+    if (args.webApiUrlPrefix !== undefined) {
+      this.webApiUrlPrefix = args.webApiUrlPrefix;
     }
   }
 };
@@ -3419,6 +3494,13 @@ LinkedNotebook.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 10:
+      if (ftype == Thrift.Type.STRING) {
+        this.webApiUrlPrefix = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -3468,6 +3550,11 @@ LinkedNotebook.prototype.write = function(output) {
   if (this.noteStoreUrl) {
     output.writeFieldBegin('noteStoreUrl', Thrift.Type.STRING, 9);
     output.writeString(this.noteStoreUrl);
+    output.writeFieldEnd();
+  }
+  if (this.webApiUrlPrefix) {
+    output.writeFieldBegin('webApiUrlPrefix', Thrift.Type.STRING, 10);
+    output.writeString(this.webApiUrlPrefix);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
