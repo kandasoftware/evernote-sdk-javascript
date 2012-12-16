@@ -13,4 +13,6 @@ test('create_note()', function(){
     create_note();
 });
 
-
+test('create_note_with_attachment()', function(){
+    create_note_with_attachment();
+})

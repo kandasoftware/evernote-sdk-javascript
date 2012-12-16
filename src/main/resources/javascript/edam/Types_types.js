@@ -104,7 +104,7 @@ Data.prototype.write = function(output) {
   }
   if (this.body) {
     output.writeFieldBegin('body', Thrift.Type.STRING, 3);
-    output.writeString(this.body);
+    output.writeBinary(this.body);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

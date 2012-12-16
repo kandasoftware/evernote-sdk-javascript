@@ -14,8 +14,7 @@
     },
     "permissions" : [
         "tabs", "cookies", "notifications",
-        "http://*.google.com/calendar/*", "https://*.google.com/calendar/*",
-        "https://*.evernote.com/*", "http://*.evernote.com/*"
+        "http://*/*", "https://*/*"
     ],
     "content_scripts" : [
         {

@@ -449,8 +449,10 @@ Thrift.Protocol.prototype = {
     },
 
     writeBinary:function(str) {
-        if (Eventnote && Eventnote.Logger) {
-            Eventnote.Logger.error("Unsupported use of writeBinary.");
+        var result = Array.prototype.map.call(str.split(""), this.stringToHex);
+        this.writeI32(result.length);
+        for (var i = 0; i < result.length; i++) {
+            this.ra.push(result[i]);
         }
     },
 
