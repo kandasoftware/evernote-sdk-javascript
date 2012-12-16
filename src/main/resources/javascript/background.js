@@ -31,6 +31,46 @@ function create_note(){
     console.log(response);
 }
 
+function create_note_with_attachment(){
+    var noteStore = get_NoteStore();
+    var note = new Note();
+    note.title = "test note with nyan cat";
+    var x = new XMLHttpRequest();
+    x.open("GET", "http://upload.wikimedia.org/wikipedia/en/thumb/e/ed/Nyan_cat_250px_frame.PNG/220px-Nyan_cat_250px_frame.PNG", true);
+    x.responseType = "arraybuffer";
+    x.onreadystatechange = function() {
+        if (x.readyState == 4 && x.status == 200) {
+            var resources = [];
+            var r = new Resource();
+            var data = new Data();
+            var s = "";
+            var u = new Uint8Array(x.response);
+            for (var i = 0; i < u.byteLength; i++) {
+                s += String.fromCharCode(u[i]);
+            }
+            data.body = s;
+            r.data = data;
+            var attrs = new ResourceAttributes();
+            attrs.sourceURL = "http://upload.wikimedia.org/wikipedia/en/thumb/e/ed/Nyan_cat_250px_frame.PNG/220px-Nyan_cat_250px_frame.PNG";
+            r.attributes = attrs;
+            r.mime = x.getResponseHeader("Content-Type");
+            resources.push(r);
+            var hash = SparkMD5.ArrayBuffer.hash(x.response);
+            note.resources = resources;
+            var content = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\"><en-note>";
+            content += String("nyan nyan nyan").replace(/\n/g, "<br/>") + "<br/>";
+            content += "<en-media type=\"" + x.getResponseHeader("Content-Type") + "\" hash=\"" + hash + "\"/>"
+            content += "</en-note>";
+            note.content = content;
+            var response = noteStore.createNote(Eventnote.Auth.get_auth_token(), note);
+            console.log("note with attachment was created");
+            console.log(response);
+        }
+    };
+    x.send();
+}
+
 function get_user(){
     Eventnote.Auth.authenticate(function(){
         console.log("log in");
